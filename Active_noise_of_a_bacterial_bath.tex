@@ -1,0 +1,230 @@
+% ****** Start of file apssamp.tex ******
+%
+%   This file is part of the APS files in the REVTeX 4.2 distribution.
+%   Version 4.2a of REVTeX, December 2014
+%
+%   Copyright (c) 2014 The American Physical Society.
+%
+%   See the REVTeX 4 README file for restrictions and more information.
+%
+% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
+% as well as the rest of the prerequisites for REVTeX 4.2
+%
+% See the REVTeX 4 README file
+% It also requires running BibTeX. The commands are as follows:
+%
+%  1)  latex apssamp.tex
+%  2)  bibtex apssamp
+%  3)  latex apssamp.tex
+%  4)  latex apssamp.tex
+%
+\documentclass[%
+ % reprint,
+superscriptaddress,
+% twocolumn,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose,
+%preprint,
+%preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,prl,
+%pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-2}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{xcolor}
+\usepackage{hyperref}% add hypertext capabilities
+
+\newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
+
+\graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
+
+% Some formatting guidelines
+% 1. Start a new line (\n) for each sentence. This is good for synctex (click pdf and find the line in tex), and also good for Git when comparing versions.
+% 2. Communicate thoughts in comments. For example, if you think a figure of something is needed but missing some where, put a comment and describe the needs.
+% 3. Colored text: I use red text to emphasize that the claim is not fully backed by our results. The wording may be modified in the future.
+% 4. Figure crossref: at the beginning of a sentence, use "Figure~\ref{}". Otherwise, use "Fig.~\ref{}". Note that the "~" is to prevent line breaking in the middle of the crossref. 
+
+
+
+\begin{document}
+
+\preprint{APS/123-QED}
+
+\title{Bacterial Dynamics in Curved Spaces}% Force line breaks with \\
+
+\author{Cristian Villalobos Concha}
+\author{Maria Luisa Cordero}
+\author{Rodrigo Soto}
+\affiliation{Departamento de Física, FCFM, Universidad de Chile, Santiago, Chile.}
+
+% \altaffiliation[Also at ]{Laboratoire Gulliver, UMR 7083 CNRS, ESPCI Paris, PSL Research University, 75005 Paris, France.}%Lines break automatically or can be forced with \\
+\author{Anke Lindner}
+\author{Eric Clément}
+\affiliation{%
+ Laboratoire PMMH, UMR 7636 CNRS-ESPCI-Sorbonne Université-Université Paris Diderot, 7-9 quai Saint-Bernard, 75005 Paris, France.
+ }%
+
+\author{Teresa Lopez-Leon}
+
+\affiliation{Laboratoire Gulliver, UMR 7083 CNRS, ESPCI Paris, PSL Research University, 75005 Paris, France.}
+\date{\today}
+% It is always \today, today,
+%  but any date may be explicitly specified
+\author{Zhengyang Liu}
+
+\affiliation{%
+ Laboratoire PMMH, UMR 7636 CNRS-ESPCI-Sorbonne Université-Université Paris Diderot, 7-9 quai Saint-Bernard, 75005 Paris, France.
+ }%
+\affiliation{Laboratoire Gulliver, UMR 7083 CNRS, ESPCI Paris, PSL Research University, 75005 Paris, France.}
+
+\begin{abstract}
+The interplay between complex environments and active matter suggests a possibility to control and engineer active matter by carefully designing the confinement structures.
+It is now well established that confinement may influence transport, rheology, pressure, spatial distribution and collective motion of active matter.
+Curved confining walls, which are ubiquitous in biological systems, show their own, specific rich and intriguing effects on active matter.
+Here, using a double emulsion system, where the inner and outer droplet sizes can be independently controlled, we experimentally investigate the influence of curved confinement on an active bath of \textit{Escherichia coli} (\ecoli) bacteria.
+In particular, we analyze the fluctuations of the inner droplet using the framework of a stochastic ``active noise'' model, and show that the strength of active noise is not an intrinsic property of an active bath, but depends on the confinement curvature.
+\textcolor{red}{Our numerical simulations revealed the origin of this dependence on confinement.}
+Our results pose new challenge to active matter theory and suggest new methods to control active matter.
+
+\end{abstract}
+
+%\keywords{Suggested keywords}%Use showkeys class option if keyword
+                              %display desired
+\maketitle
+
+\section{Introduction}
+% Use "Active noise" key word to label all the literatures related to this project
+The interactions between active and passive objects are always intriguing.
+On the one hand, passive objects are often used as a probe to assess the properties, in particular activity, which are sometimes challenging to measure directly.
+On the other hand, the capabilities of activity to ehance mixing of fluids and transport of nutrients show great ecological significance and can potentially enable important biomedical applications \cite{Kurtuldu2011, Pushkin2013, Saintillan2008a, Sokolov2009a}.
+
+On the most elementary level, the interaction between an active particle and a passive particle can be described as ``scattering''.
+In this process, the active particle swims by the passive particle results in a closed-loop trajectory, due to the hydrodynamic head-rear symmetry of the model swimmer \cite{Dunkel2010}.
+In the presence of a confining wall, the flow field generated by an active swimmer is modified, as if there is a mirror image of the swimmer, with force singularities pointing in opposite directions \cite{Blake1974}.
+The head-rear symmetry is broken in the modified flow field, leading to net displacement of passive object in a single scattering event.
+Based on this picture, Mino et al. successfully modeled the confinement effect on the diffusivity of passive particles in active bath \cite{Mino2011, Mino2013}.
+\citet{Lagarde2020} focused their experiment more on the single scattering event, and found far field hydrodynamic interactions to be irrelevant compared to direct collisions.
+The experiments mentioned above all revealed an important aspect of active baths: the effect on passive tracer diffusivity is stochastic and additive.
+This discovery has led to efforts to model active baths as a stochastic noise \cite{Gregoire2001, Maggi2014, Wu2000, Ye2020}.
+
+Boundaries are known to have dramatic impact on active matter, with examples of pattern formation, directed flow and unusual mechanical properties \cite{Wioland2013, Wu2017, Liu2019}.
+Planar boundaries, which are common and easy to produce in labs, have been studied extensively in the past two decades.
+However, less is known about how curved boundaries affect active matter behavior.
+
+In this paper, we experimentally investigate this question by putting active bacterial suspensions into the middle layer (also know as the ``shell'' layer) of oil-water-oil double emulsions.
+We analyze the fluctuations of the inner droplet using the framework of a stochastic ``active noise'' model, and show that the strength of active noise is not an intrinsic property of an active bath, but depends on the confinement curvature.
+\textcolor{red}{Furthermore, we show that the dependence on confinement originates from two aspects: collision angle and activity. Our numerical simulations reveal the origin how spherical confining wall reduces the activity of an active bath.}
+Our results deepen the understanding of active matter behavior under confinement.
+
+\section{Experiment}
+% Initial version is copied from Overleaf
+
+In this work, we study the agitation due to a suspension of bacteria \textit{E.coli} confined on a double emulsion-bacterial shell shown in Fig.~\ref{montaje_doble}.
+
+The bacterial suspension is encapsulated in a double emulsion, where an oil droplet gets trapped inside a water-in-oil emulsion.
+We show that the inner oil droplet performs a persistent random walk for short times and a saturation regime for large times.
+The bacteria used is a wild-type \ecoli~(RP437)  which contains a plasmid to express the green fluorescence protein (GFP), and  \ecoli~(W3110) which is also genetically modified to express the green fluorescence protein (GFPmut2).  Both strains have the same features (e.g., run and tumble), but the difference is how they express the GFP.
+
+The bacteria were grown using a standard protocol, washed, and re-suspended in a motility medium, allowing the bacteria to swim but not divide.
+The final concentration of the bacterial suspension ranges from $OD_{600} = 0.7$ to $OD_{600} = 150$.
+A volume of 10 $\mu$L of the bacterial suspension is added to 1 mL of hexadecane containing 2 wt\% Span 80 (Sigma-Aldrich, S6760) as a surfactant.
+The mixture is manually shacking, resulting in an emulsion of aqueous droplets containing the bacterial suspension in oil; also, less commonly, bacterial droplets will form with a drop of oil inside, i.e. a double emulsion.
+The observation setup is a square chamber of inner side $L = 1$ cm and height $h = 400$ $\mu$m. The chamber walls are fabricated in SU-8 photoresist (Gersteltec GM 1075) with optical lithography (Heidelberg Instruments MLA 100) on a 50.8 mm diameter and 500 $\mu$m thick circular glass wafer.
+As the aqueous bacterial suspension is denser than the ambient hexadecane, drops sediment to the bottom of the chamber.
+The inner droplet rises by the buoyancy to the top of the bacterial droplet.
+For the measurements in the XY plane, the chamber is placed on an inverted microscope (Nikon TS100F), observed with a 60X objective, and filmed at 10--100 Hz.
+For the XZ plane, when the emulsion is made, it is collected into a 1 mm square capillary and observed using an inverted confocal microscope with a 40X objective, filming at 50--70 Hz with a camera mounted on the microscope.
+Besides, the confocal microscope can be rotated, which allows us to observe the drops from the side instead of the top-bottom sight.
+In Fig.~\ref{montaje_doble}(a), we show the coordinates defined on the double emulsion, where Fluid A is hexadecane, and fluid B is the bacterial suspension.
+The inner droplet moves randomly due to the bacterial suspension [Fig.~\ref{montaje_doble}(b)], without the bacterial suspension, due to the size of the internal drop, it would not be able to move due to thermal fluctuations.
+In the bottom row of Fig.~\ref{montaje_doble}(b), we can see that the inner droplets remain in the top part of the droplet.
+
+\section{Results}
+
+\subsection{Inner droplet trajectories}
+% What can we get from trajectories?
+% 1. steady state assessment - by variance over time
+% 2. anomalous transport - by displacement PDF at different dt - relate characteristic length with dt
+% 3. active diffusivity - by fitting MSD
+\textcolor{blue}{
+In this section, we report the results of inner droplet trajectories.
+It should include the trajectory illustration, variance time series, displacement PDF, MSD and perhaps more.
+}
+\subsection{Bacterial activity}
+\textcolor{blue}{
+In this section, we report the bacterial activity measurement by PIV and particle tracking.
+It should include mean velocity as a function of droplet size and OD, as well as spatial velocity in various conditions.
+}
+\subsection{Droplet lifetime}
+\textcolor{blue}{
+In this section, we report the time dependence of droplet activity, in particular the ``frozen droplet'' phenomenon.
+We hope to use this phenomenon as a support of our argument that confinement affects bacterial activity.
+However, even if this support turns out to be weak, we still can publish this phenomenon on its own, because it's new.
+}
+\subsection{Numerical simulation}
+% Idea is to align some simulation results with experimental results.
+% The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
+% If there are new results from simulation, we can get together to discuss what to include in this section.
+
+
+\bibliography{ref}
+\end{document}
+%
+% ****** End of file apssamp.tex ******
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% place holder
