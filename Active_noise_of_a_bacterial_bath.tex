@@ -21,7 +21,7 @@
 \documentclass[%
  % reprint,
 superscriptaddress,
-% twocolumn,
+twocolumn,
 %groupedaddress,
 %unsortedaddress,
 %runinaddress,
@@ -168,18 +168,30 @@ In the bottom row of Fig.~\ref{montaje_doble}(b), we can see that the inner drop
 \section{Results}
 
 \subsection{Inner droplet trajectories}
-% What can we get from trajectories?
-% 1. steady state assessment - by variance over time
-% 2. anomalous transport - by displacement PDF at different dt - relate characteristic length with dt
-% 3. active diffusivity - by fitting MSD
 \textcolor{blue}{
 In this section, we report the results of inner droplet trajectories.
 It should include the trajectory illustration, variance time series, displacement PDF, MSD and perhaps more.
 }
+\begin{figure*}[!t]
+  \includegraphics[width=\textwidth]{2-traj-analysis}
+  \caption[Double emulsion]{
+  \textbf{Inner droplet trajectory analysis.}
+  (a) The trajectory of the inner droplet plotted on an experimental image.
+  Outer droplet radius $r_o= 33.2$ $\mu$m and inner droplet radius $r_i=6.0$ $\mu$m.
+  Color from dark purple to bright yellow denotes time from the beginning to the end.
+  (b) Position probability distribution in $y$ direction. Red curve is a Gaussian fit to the distribution, with mean $\mu = -0.3$ $\mu$m and standard deviation $\sigma = 2.8$ $\mu$m.
+  (c) Displacement probability density function (PDF) in $y$ direction, at various time interval $\Delta t$.
+  (d) Displacement PDF, where the displacement $\Delta y$ is rescaled by the square root of time interval $\Delta t^{1/2}$.
+  (e) Mean square displacement (MSD) of all inner droplet trajectories in this study, with time rescaled by fitted relaxation time $\tau^*$ and MSD rescaled by the product of active diffusivity and relaxation time $D_A\tau^*$.
+  (f) A fit of MSD data to our 1D model, fitting parameters are $D_A=1.95$ $\mu$m$^2$/s, $\tau=0.25$ s, $\tau^*=4.40$ s and $c=0.086$ $\mu$m$^2$/s.
+  }
+  \label{fig:traj-analysis}
+\end{figure*}
+
 \subsection{Bacterial activity}
 \textcolor{blue}{
 In this section, we report the bacterial activity measurement by PIV and particle tracking.
-It should include mean velocity as a function of droplet size and OD, as well as spatial velocity in various conditions.
+It should include mean velocity as a function of droplet size and OD, as well as spatial velocity profiles in various conditions.
 }
 \subsection{Droplet lifetime}
 \textcolor{blue}{
@@ -187,6 +199,7 @@ In this section, we report the time dependence of droplet activity, in particula
 We hope to use this phenomenon as a support of our argument that confinement affects bacterial activity.
 However, even if this support turns out to be weak, we still can publish this phenomenon on its own, because it's new.
 }
+\subsection{}
 \subsection{Numerical simulation}
 % Idea is to align some simulation results with experimental results.
 % The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
