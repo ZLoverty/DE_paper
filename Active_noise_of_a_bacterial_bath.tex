@@ -46,7 +46,7 @@ superscriptaddress,
 \usepackage{bm}% bold math
 \usepackage{xcolor}
 \usepackage{hyperref}% add hypertext capabilities
-
+\usepackage{siunitx}% SI units
 \newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
 
 \graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
@@ -55,7 +55,7 @@ superscriptaddress,
 % 1. Start a new line (\n) for each sentence. This is good for synctex (click pdf and find the line in tex), and also good for Git when comparing versions.
 % 2. Communicate thoughts in comments. For example, if you think a figure of something is needed but missing some where, put a comment and describe the needs.
 % 3. Colored text: I use red text to emphasize that the claim is not fully backed by our results. The wording may be modified in the future.
-% 4. Figure crossref: at the beginning of a sentence, use "Figure~\ref{}". Otherwise, use "Fig.~\ref{}". Note that the "~" is to prevent line breaking in the middle of the crossref. 
+% 4. Figure crossref: at the beginning of a sentence, use "Figure~\ref{}". Otherwise, use "Fig.~\ref{}". Note that the "~" is to prevent line breaking in the middle of the crossref.
 
 
 
@@ -131,6 +131,19 @@ Our results deepen the understanding of active matter behavior under confinement
 
 \section{Experiment}
 % Initial version is copied from Overleaf
+
+\begin{figure*}[!t]
+  \includegraphics[width=\textwidth]{Diagrama_DE}
+  \caption[Double emulsion]{
+  \textbf{Double emulsion --- bacterial shells.}
+  (a) A Schematic diagram of the bacterial shell system, along with the coordinate system defined on it.
+  The outer droplet of density $\rho_A$ and radius $r_o$ filled with bacterial suspensions.
+  Inside this droplet there is another droplet filled with an oil of density $\rho_B < \rho_A$.
+  (b) Sequence of image separated by $\Delta t =\SI{5}{\second}$. Top row; shows the XY plane of a bacterial shell of outer diameter $r_o=\SI{27}{\micro\meter}$ and a inner droplet of diameter $r_i=\SI{13.5}{\micro\meter}$.
+  (c) A view of the XZ plane of a drop of diameter $r_o=\SI{11.5}{\micro\meter}$ and a inner drop of $r_i=\SI{2.9}{\micro\meter}$.
+  (d-e) Trajectory of the center of the inner droplet.}
+  \label{montaje_doble}
+\end{figure*}
 
 In this work, we study the agitation due to a suspension of bacteria \textit{E.coli} confined on a double emulsion-bacterial shell shown in Fig.~\ref{montaje_doble}.
 
