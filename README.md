@@ -17,7 +17,8 @@ Collaborate with Cristian to draft the paper on active fluctuations in double em
 ### Every time
 
 1. Pull the main branch.
-2. Switch to a new branch.
-3. Edit and commit to the new branch.
+2. Merge main branch to your branch.
+2. Switch to your branch.
+3. Edit and commit to your branch.
 4. Create a pull request to merge the new branch to main.
 5. If there are conflicts, we should set up a meeting to discuss.
