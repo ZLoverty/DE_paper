@@ -10,7 +10,14 @@ Collaborate with Cristian to draft the paper on active fluctuations in double em
 
 ## Git workflow
 
+### First time
+
 1. Setup the local files by cloning the repo.
+
+### Every time
+
+1. Pull the main branch.
 2. Switch to a new branch.
 3. Edit and commit to the new branch.
 4. Create a pull request to merge the new branch to main.
+5. If there are conflicts, we should set up a meeting to discuss.
