@@ -20,6 +20,7 @@
 %
 \documentclass[%
  % reprint,
+10pt,
 superscriptaddress,
 twocolumn,
 %groupedaddress,
@@ -168,13 +169,28 @@ In Fig.~\ref{montaje_doble}(a), we show the coordinates defined on the double em
 The inner droplet moves randomly due to the bacterial suspension [Fig.~\ref{montaje_doble}(b)], without the bacterial suspension, due to the size of the internal drop, it would not be able to move due to thermal fluctuations.
 In the bottom row of Fig.~\ref{montaje_doble}(b), we can see that the inner droplets remain in the top part of the droplet.
 
+\section{1D model}
+\label{sec:1d-model}
+
 \section{Results}
 
 \subsection{Inner droplet trajectories}
-\textcolor{blue}{
-In this section, we report the results of inner droplet trajectories.
-It should include the trajectory illustration, variance time series, displacement PDF, MSD and perhaps more.
-}
+
+In the double emulsion experimental system, the inner droplet is frequently ``kicked'' by the many swimming bacteria around it.
+As a result, it exhibits fluctuations much stronger than Brownian motion in the horizontal ($y$) direction.
+Due to the smaller density of the inner droplet relative to the bacterial suspension, a buoyant force is constantly pushing it to the top surface of the outer droplet, making the dome an equilibrium position.
+In the vertical ($z$) direction, the inner droplet mostly follows the outer droplet surface.
+A typical inner droplet trajectory is shown in Fig.~\ref{fig:traj-analysis}(a).
+The colored dots denote the positions of inner droplet center at different time.
+In cases where inner droplet size is very small, while the bacterial activity is large, inner droplet can leave the surface.
+We can roughly estimate the critical inner droplet radius, below which bacterial activity can overcome buoyant force.
+The buoyant force is $F_b = \frac{4}{3}\pi r_i^3\Delta\rho g$, where $\Delta\rho\approx 230$ kg/m$^3$ is the density difference between water and hexadecane, and $g\approx 9.8$ m/s$^2$ is the gravitational accelaration.
+The propelling force of a single bacteria is approximated by the Stokes drag on a sphere $F_a \approx 6\pi\eta r_b V_b$, where $\eta=0.001$ Pa$\cdot$s is water viscosity, $r_b\approx 0.5$ $\mu$m is bacteria cross section radius and $V_b\approx 20$ $\mu$m/s is the simming speed of bacteria.
+Let $F_b=F_a$, we get a critical droplet radius $r_c \approx 2.7$ $\mu$m.
+Indeed, since we never prepared inner droplet with radius $r_i < r_c$, inner droplet leaving the surface is a rare event.
+However, in very concentrated bacterial suspensions, the inner droplet can leave the surface even when $r_i > r_c$.
+This is likely due to more frequent collision event, or collective motions.
+
 \begin{figure*}[!t]
   \includegraphics[width=\textwidth]{2-traj-analysis}
   \caption[Double emulsion]{
@@ -190,6 +206,26 @@ It should include the trajectory illustration, variance time series, displacemen
   }
   \label{fig:traj-analysis}
 \end{figure*}
+
+Next, we measured the position and displacement probability distribution functions (PDF) in the horizontal direction, as shown in Figs.~\ref{fig:traj-analysis}(b-d).
+The distribution is well fitted by a Gaussian function, shown as the red curve.
+According to \citet{Leptos2009}, in the presence of swimmers, the displacement PDF is characterized by a Gaussian core and exponential tails.
+In our data, exponential tails are also observed when $\Delta t = 0.02, 0.08, 0.14$ s, manifesting anomalous transport [Fig.~\ref{fig:traj-analysis}(c)].
+Further increasing the time interval makes the exponential tails disappear.
+\textcolor{red}{
+  When rescaling the displacement $\Delta y$ with square root of time interval $\Delta t^{1/2}$, as shown in Fig.~\ref{fig:traj-analysis}(d), we notice that all the Gaussian cores of the PDF curves, except the $\Delta t=0.02, 0.08$ s ones, collapse on the same master curve.
+  The deviations of the small $\Delta t$ curves from the master curve suggest that strong persistence is in play at this time scale $\tau_c\approx 0.1$ s, rather than a random diffusive process.
+}
+Finally, we measured the mean square displacement (MSD) of inner droplets in all our experiments, at various bacterial concentrations and droplet sizes, as shown in Fig.~\ref{fig:traj-analysis}(e).
+The lag time and MSD are rescaled by $\tau^*$ and $D_A\tau^&$, respectively, which are obtained from fitting the original MSD data to the 1D model described in \textcolor{red}{Sec.~\ref{sec:1d-model}}.
+An example of the fit is shown in Fig.~\ref{fig:traj-analysis}(f).
+Typically, the MSD is characterized by a superdiffusive regime at small $\Delta t$, and a transition to saturation at large $\Delta t$.
+A diffusive regime can be identified in some cases, but not always.
+The critical $\Delta t$'s, $\tau$ and $\tau^*$, vary with droplet sizes and possibility bacterial concentrations.
+We will discuss this in detail in Sec.~\ref{sec:confinement}.
+
+\subsection{Confinement effect}
+\label{sec:confinement}
 
 \subsection{Bacterial activity}
 \textcolor{blue}{
