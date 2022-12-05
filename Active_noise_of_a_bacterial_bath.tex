@@ -138,14 +138,15 @@ Our results deepen the understanding of active matter behavior under confinement
 
 \begin{figure*}[!t]
   \includegraphics[width=\textwidth]{Diagrama_DE}
-  \caption[Double emulsion]{
+  \caption{
   \textbf{Double emulsion --- bacterial shells.}
   (a) A Schematic diagram of the bacterial shell system, along with the coordinate system defined on it.
   The outer droplet of density $\rho_A$ and radius $r_o$ filled with bacterial suspensions.
   Inside this droplet there is another droplet filled with an oil of density $\rho_B < \rho_A$.
   (b) Sequence of image separated by $\Delta t =\SI{5}{\second}$. Top row; shows the XY plane of a bacterial shell of outer diameter $r_o=\SI{27}{\micro\meter}$ and a inner droplet of diameter $r_i=\SI{13.5}{\micro\meter}$.
   (c) A view of the XZ plane of a drop of diameter $r_o=\SI{11.5}{\micro\meter}$ and a inner drop of $r_i=\SI{2.9}{\micro\meter}$.
-  (d-e) Trajectory of the center of the inner droplet.}
+  (d-e) Trajectory of the center of the inner droplet.
+  }
   \label{montaje_doble}
 \end{figure*}
 
@@ -249,7 +250,7 @@ This is likely due to more frequent collision event, or collective motions.
 
 \begin{figure*}[!t]
   \includegraphics[width=\textwidth]{2-traj-analysis}
-  \caption[Double emulsion]{
+  \caption{
   \textbf{Inner droplet trajectory analysis.}
   (a) The trajectory of the inner droplet plotted on an experimental image.
   Outer droplet radius $r_o= 33.2$ $\mu$m and inner droplet radius $r_i=6.0$ $\mu$m.
@@ -296,7 +297,7 @@ Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
 
 \begin{figure}[!t]
   \includegraphics[width=\columnwidth]{3-confinement-effect}
-  \caption[Double emulsion]{
+  \caption{
   \textbf{Confinement effect on the inner droplet motions.}
   (a) Explored parameter space of outer droplet radius $r_o$, inner droplet radius $r_i$ and bacterial concentration in terms of optical density (OD).
   OD's are divided in 5 groups, shown as different colors and markers in the plot.
@@ -311,9 +312,44 @@ Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
 
 
 \subsection{Bacterial activity}
-\textcolor{blue}{
-In this section, we report the bacterial activity measurement by PIV and particle tracking.
-It should include mean velocity as a function of droplet size and OD, as well as spatial velocity profiles in various conditions.
+
+The confinement effect on the active diffusivity may be correlated with the bacterial activity.
+Indeed, we frequently observed very different activity at the same bacterial concentration.
+In order to quantify the activity, we perform particle image velocimetry (PIV) analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
+Formally, we obtain velocity magnitude field $\mathbb{V}=\{V_{ij}\}$ from PIV.
+The mean velocity $\overline V$ is defined as
+%
+\begin{equation}
+    \overline V = \sqrt {\frac{1}{n}\sum_{ij} V_{ij}^2}.
+\end{equation}
+%
+To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. In the data presented here, all the PIV analysis are performed with OpenPIV (version 0.24.2). We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
+
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{bacterial-activity}
+  \caption{
+  Mean PIV velocity $\overline V$ as a measure of bacterial activity, plotted against outer droplet radius $r_o$.
+  }
+  \label{fig:bacterial-activity}
+\end{figure}
+
+In Fig.~\ref{fig:bacterial-activity}, we plot $\overline V$ as a function of $r_o$.
+As usual, the data are put into different groups by bacterial concentrations.
+In each OD bin, in particular $\text{OD}\in(20, 40]$ (blue pentagons) and $\text{OD}\in(60, 80]$ (green squares), $\overline V$ increases with $r_o$, suggesting that droplet confinement hinders the activity of bacteria.
+However, from this data, it is still unclear how activity depends on OD.
+
+\textcolor{red}{
+At the moment, we have not finished PIV on all the videos, partially due to the less organized data analysis in the past.
+As a result, we see less data points in Fig.~\ref{fig:bacterial-activity} compared to the parameter space plot Fig.~\ref{fig:confinement-effect}(a).
+In addition, I did not have Cristian's raw data from Chile, so it was impossible to apply the same PIV algorithm on both data sets.
+Recently, we are transferring the raw videos from Chile to Paris.
+In the meantime, I am reorganizing and redoing PIV analysis on the Paris data.
+The goal of this reanalysis is to provide better consistency in the method.
+For example, when setting interrogation window size, we want the physical size (rather than pixel size) to be constant across all the analysis.
+There are also changes in my PIV code, related to smoothing, which can also lead to a difference in the final results.
+Last thing is the long standing problem regarding droplet boundary and mask, which also requires uniform treatment.
+In short, a REDO of PIV is ongoing, and is likely to change the results given in Fig.~\ref{fig:bacterial-activity}.
+When we have the new data, we shall discuss the interpretations and the limitations of the method, and so on.
 }
 \subsection{Droplet lifetime}
 \textcolor{blue}{
