@@ -58,6 +58,9 @@ twocolumn,
 % 3. Colored text: I use red text to emphasize that the claim is not fully backed by our results. The wording may be modified in the future.
 % 4. Figure crossref: at the beginning of a sentence, use "Figure~\ref{}". Otherwise, use "Fig.~\ref{}". Note that the "~" is to prevent line breaking in the middle of the crossref.
 
+% Some content problems that need to be fixed
+% 1. Same quantities are referred to in different notations, e.g. \tau^* and \tilde{\tau}, x and y, \tilde{D} and D_A
+
 
 
 \begin{document}
@@ -108,7 +111,7 @@ Our results pose new challenge to active matter theory and suggest new methods t
 
 \section{Introduction}
 % Use "Active noise" key word to label all the literatures related to this project
-The interactions between active and passive objects are always intriguing. 
+The interactions between active and passive objects are always intriguing.
 On the one hand, passive objects are often used as a probe to assess the properties, in particular activity, which are sometimes challenging to measure directly.
 On the other hand, the capabilities of activity to ehance mixing of fluids and transport of nutrients show great ecological significance and can potentially enable important biomedical applications \cite{Kurtuldu2011, Pushkin2013, Saintillan2008a, Sokolov2009a}.
 
@@ -170,7 +173,60 @@ The inner droplet moves randomly due to the bacterial suspension [Fig.~\ref{mont
 In the bottom row of Fig.~\ref{montaje_doble}(b), we can see that the inner droplets remain in the top part of the droplet.
 
 \section{1D model}
-\label{sec:1d-model}
+% I rewrite the 1D model part based on the overleaf version to serve as a reference for the discussions of the results.
+
+To model the experiment, we consider the inner droplet as a passive particle agitated by an active noise.
+The outer droplet imposes confinement on the inner droplet.
+For a small displacement from the equilibrium point, the effect of the curved surface can be approximated by a harmonic potential.
+The equation of motion for the inner droplet in the Low Reynolds number limit is the overdamped Langevin equation:
+%
+\begin{align}
+    \label{eq.Langevin}
+    \dot{x}=u(t)-\frac{x}{\tilde{\tau}}.
+\end{align}
+%
+where $\tilde{\tau}=\Gamma/k$, with $\Gamma$ the friction coefficient, $k$ the spring constant for the harmonic potential, and $u(t)$ is the active noise induced by the bacterial suspension.
+We will model the active noise as a colored Gaussian noise, with the following statistical properties:
+%
+\begin{align}
+    \label{eq.act.noise}
+    \langle u(t)\rangle &=0,\\
+    \langle u(t)u(t')\rangle &=\frac{\tilde{D}}{\tau}e^{-|t-t'|/\tau}.
+\end{align}
+%
+where $\tilde{D}$ is the active diffusion coefficient, and $\tau$ is the persistence time of the bacterial fluxes. The solution of the eq(\ref{eq.Langevin}) is given by:
+%
+\begin{align}
+    \label{sol:langevin}
+    x(t) = x_oe^{-t/\tilde{\tau}}+\int_{0}^{\infty}ds e^{-|t-s|/\tilde{\tau}}u(s).
+\end{align}
+
+We can derive the mean-square displacement (MSD):
+%
+\begin{align}
+    \label{eq.MSD_1d}
+    \langle \Delta x^2(t)\rangle = \frac{2(\tilde{D}/\tau)}{\frac{1}{\tilde{\tau}}+\frac{1}{\tau}}\left(\frac{1-e^{-\frac{2t}{\tilde{\tau}}}}{\frac{2}{\tilde{\tau}}}-\frac{e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2t}{\tilde{\tau}}}}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right),
+\end{align}
+%
+with the short and long time limits given by:
+%
+\begin{align}
+    \label{eq.limits}
+    \lim_{t\to0} \langle \Delta x^2(t)\rangle & = \frac{\tilde{D}}{\tau}t^2,\\
+    \lim_{t\to\infty} \langle \Delta x^2(t)\rangle & =\frac{\tilde{D}(\tau^*)^2}{\tilde{\tau}+\tau}.
+\end{align}
+%
+We can see that the MSD is ballistic at short times andsaturates to a constant value at long times due to the confinement imposed by the harmonic potential. In Fig.~\ref{fig:msd-1d-model} we show two plots of the Eq.~\ref{eq.MSD_1d} for different values of $\tilde{\tau}$ while keeping $\tau$ fixed, and different $\tau$ while keeping $\tilde{\tau}$ fixed.
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{model-msd-illustration}
+  \caption{
+  \textbf{MSD 1D model.}
+  (a) Different values of $\tilde{\tau}$, where $\tau=0.5$ and $D=5$.
+  (b) Different values of $\tau$, where $\tilde{\tau}=200$ and $D=5$.
+  }
+  \label{fig:msd-1d-model}
+\end{figure}
 
 \section{Results}
 
@@ -185,7 +241,7 @@ The colored dots denote the positions of inner droplet center at different time.
 In cases where inner droplet size is very small, while the bacterial activity is large, inner droplet can leave the surface.
 We can roughly estimate the critical inner droplet radius, below which bacterial activity can overcome buoyant force.
 The buoyant force is $F_b = \frac{4}{3}\pi r_i^3\Delta\rho g$, where $\Delta\rho\approx 230$ kg/m$^3$ is the density difference between water and hexadecane, and $g\approx 9.8$ m/s$^2$ is the gravitational accelaration.
-The propelling force of a single bacteria is approximated by the Stokes drag on a sphere $F_a \approx 6\pi\eta r_b V_b$, where $\eta=0.001$ Pa$\cdot$s is water viscosity, $r_b\approx 0.5$ $\mu$m is bacteria cross section radius and $V_b\approx 20$ $\mu$m/s is the simming speed of bacteria.
+The propelling force of a single bacteria is approximated by the Stokes drag on a sphere $F_a \approx 6\pi\eta r_b V_b$, where $\eta=0.001$ Pa$\cdot$s is water viscosity, $r_b\approx 0.5$ $\mu$m is bacteria cross section radius and $V_b \approx 20$ $\mu$m/s is the simming speed of bacteria.
 Let $F_b=F_a$, we get a critical droplet radius $r_c \approx 2.7$ $\mu$m.
 Indeed, since we never prepared inner droplet with radius $r_i < r_c$, inner droplet leaving the surface is a rare event.
 However, in very concentrated bacterial suspensions, the inner droplet can leave the surface even when $r_i > r_c$.
@@ -212,20 +268,47 @@ The distribution is well fitted by a Gaussian function, shown as the red curve.
 According to \citet{Leptos2009}, in the presence of swimmers, the displacement PDF is characterized by a Gaussian core and exponential tails.
 In our data, exponential tails are also observed when $\Delta t = 0.02, 0.08, 0.14$ s, manifesting anomalous transport [Fig.~\ref{fig:traj-analysis}(c)].
 Further increasing the time interval makes the exponential tails disappear.
-\textcolor{red}{
-  When rescaling the displacement $\Delta y$ with square root of time interval $\Delta t^{1/2}$, as shown in Fig.~\ref{fig:traj-analysis}(d), we notice that all the Gaussian cores of the PDF curves, except the $\Delta t=0.02, 0.08$ s ones, collapse on the same master curve.
-  The deviations of the small $\Delta t$ curves from the master curve suggest that strong persistence is in play at this time scale $\tau_c\approx 0.1$ s, rather than a random diffusive process.
-}
+\textcolor{red}{When rescaling the displacement $\Delta y$ with square root of time interval $\Delta t^{1/2}$, as shown in Fig.~\ref{fig:traj-analysis}(d), we notice that all the Gaussian cores of the PDF curves, except the $\Delta t=0.02, 0.08$ s ones, collapse on the same master curve.
+The deviations of the small $\Delta t$ curves from the master curve suggest that strong persistence is in play at this time scale $\tau_c\approx 0.1$ s, rather than a random diffusive process.}
 Finally, we measured the mean square displacement (MSD) of inner droplets in all our experiments, at various bacterial concentrations and droplet sizes, as shown in Fig.~\ref{fig:traj-analysis}(e).
-The lag time and MSD are rescaled by $\tau^*$ and $D_A\tau^&$, respectively, which are obtained from fitting the original MSD data to the 1D model described in \textcolor{red}{Sec.~\ref{sec:1d-model}}.
+The lag time and MSD are rescaled by $\tau^*$ and $D_A\tau^*$, respectively, which are obtained from fitting the original MSD data to the 1D model described before.
 An example of the fit is shown in Fig.~\ref{fig:traj-analysis}(f).
 Typically, the MSD is characterized by a superdiffusive regime at small $\Delta t$, and a transition to saturation at large $\Delta t$.
 A diffusive regime can be identified in some cases, but not always.
-The critical $\Delta t$'s, $\tau$ and $\tau^*$, vary with droplet sizes and possibility bacterial concentrations.
-We will discuss this in detail in Sec.~\ref{sec:confinement}.
+The critical $\Delta t$'s, $\tau$ and $\tau^*$, vary with droplet sizes and possibility bacterial concentrations, which will be discussed in the following section.
 
 \subsection{Confinement effect}
-\label{sec:confinement}
+
+We studied the motions of inner droplets in over 100 systems of various sizes and bacterial concentration.
+Although the simple ``mechanical mixing'' technique does not provide accurate control over droplet sizes, we manage to explore a considerable large parameter space in detail, and to reveal the confinement effect.
+The explored parameter space is shown in Fig.~\ref{fig:confinement-effect}(a).
+Since we have 3 different parameters varying at the same time, we shall select experiments where two of the parameters are fixed, in order to illustrate the effect from a single parameter.
+Here, we choose $\text{OD}\in(20, 40]$ (blue pentagons) and $\text{OD}\in(60, 80]$ (green squares) to illustrate low and high bacterial concentrations, respectively.
+To see the effect of outer droplet radius $r_o$, we select data where $r_i\in[5, 9]$ ($\mu$m) and plot active diffusivity $D_A$, persistence time $\tau$ and relaxation time $\tau^*$ as functions of $r_o$, as shown in Fig.~\ref{fig:confinement-effect}(b).
+We find that $D_A$ increases monotonically with $r_o$ at both low and high OD.
+The increasing rate at high OD, characterized by the slope of $D_A$-$r_o$ curve, is much larger than that at low OD.
+$\tau$ and $\tau^*$ show little to no dependence on $r_o$ in our experiments.
+Similarly, to see the effect of inner droplet radius $r_i$, we select data where $r_o\in[30, 50]$ ($\mu$m) and plot $D_A$, $\tau$ and $\tau^*$ as functions of $r_i$, as shown in Fig.~\ref{fig:confinement-effect}(c).
+We find that neither $D_A$ nor $\tau$ show pronounced dependence on $r_i$, while $\tau^*$ decreases monotonically with $r_i$.
+Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
+
+% I'm not sure if I should discuss the predictions of the model here, or later in another section.
+
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{3-confinement-effect}
+  \caption[Double emulsion]{
+  \textbf{Confinement effect on the inner droplet motions.}
+  (a) Explored parameter space of outer droplet radius $r_o$, inner droplet radius $r_i$ and bacterial concentration in terms of optical density (OD).
+  OD's are divided in 5 groups, shown as different colors and markers in the plot.
+  Two bins of data are selected to highlight the confinement effect.
+  The first bin is $r_i\in[5, 9]$ ($\mu$m), as shaded in gray.
+  The second bin is $r_o\in[30, 50]$ ($\mu$m), as shaded in light orange.
+  (b) Fitting parameters $D_A$, $\tau$ and $\tau^*$ plotted as functions of $r_o$ in the first bin.
+  (c) Fitting parameters $D_A$, $\tau$ and $\tau^*$ plotted as functions of $r_i$ in the second bin.
+  }
+  \label{fig:confinement-effect}
+\end{figure}
+
 
 \subsection{Bacterial activity}
 \textcolor{blue}{
