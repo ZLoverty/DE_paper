@@ -316,11 +316,11 @@ Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
 The confinement effect on the active diffusivity may be correlated with the bacterial activity.
 Indeed, we frequently observed very different activity at the same bacterial concentration.
 In order to quantify the activity, we perform particle image velocimetry (PIV) analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
-Formally, we obtain velocity magnitude field $\mathbb{V}=\{V_{ij}\}$ from PIV.
+Formally, we obtain velocity magnitude field $\mathbb{V}=\{\bm{V}_{i}\}$ from PIV.
 The mean velocity $\overline V$ is defined as
 %
 \begin{equation}
-    \overline V = \sqrt{\frac{1}{n}\sum_{ij} V_{ij}^2}.
+    \overline V = \sqrt{\frac{1}{N}\sum_{i}^N |\bm{V}_{i}|^2}.
 \end{equation}
 %
 To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. In the data presented here, all the PIV analysis are performed with OpenPIV (version 0.24.2). We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
@@ -374,7 +374,6 @@ Therefore, it is necessary to verify the steady state of experiment.
 \end{document}
 %
 % ****** End of file apssamp.tex ******
-
 
 
 
