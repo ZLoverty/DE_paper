@@ -185,7 +185,9 @@ Figures~\ref{montaje_doble}(b) and (c) show some snapshots of $xy$-plane and $xz
 
 \subsection{Image analysis}
 
-Droplet tracking and PIV.
+Droplet tracking was done with a method based on Hough Transform (HT), a common technique for feature extraction \cite{Stockman2001}. 
+The results were refined by a custom Python code, which will be discussed in the appendix.
+Particle image velocimetry (PIV) was performed using OpenPIV package in Python \cite{OpenPIV}, for characterizing bacterial activity in droplets.
 
 \section{1D model}
 % I rewrite the 1D model part based on the overleaf version to serve as a reference for the discussions of the results.
@@ -329,7 +331,7 @@ Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
 
 The confinement effect on the active diffusivity may be correlated with the bacterial activity.
 Indeed, we frequently observed very different activity at the same bacterial concentration.
-In order to quantify the activity, we perform particle image velocimetry (PIV) analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
+In order to quantify the activity, we perform PIV analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
 Formally, we obtain velocity magnitude field $\mathbb{V}=\{\bm{V}_{i}\}$ from PIV.
 The mean velocity $\overline V$ is defined as
 %
@@ -337,7 +339,8 @@ The mean velocity $\overline V$ is defined as
     \overline V = \sqrt{\frac{1}{N}\sum_{i}^N |\bm{V}_{i}|^2}.
 \end{equation}
 %
-To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. In the data presented here, all the PIV analysis are performed with OpenPIV (version 0.24.2). We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
+To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. 
+We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
 
 \begin{figure}[!t]
   \includegraphics[width=\columnwidth]{bacterial-activity}
@@ -379,16 +382,70 @@ A typical bacterial sample used in our experiment, however, can only last around
 Therefore, it is necessary to verify the steady state of experiment. 
 
 \subsection{Numerical simulation}
-\textcolor{blue}{In this section, we report the results from numerical simulation of droplet motions. The idea is to align some simulation results with experimental results, e.g. confinement effect. The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters. If there are new results from simulation, we can get together to discuss what to include in this section.}
+\textcolor{blue}{
+In this section, we report the results from numerical simulation of droplet motions. 
+The idea is to align some simulation results with experimental results, e.g. confinement effect. 
+The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters. 
+If there are new results from simulation, we can get together to discuss what to include in this section.}
 
 \section{Discussions}
 
 \textcolor{blue}{
-  In this section, we discuss the results. For the results we understand, we can provide more insight, e.g. by giving more detailed description and analysis of a model. For the results we do not understand yet, we discuss in the context of literature, and pose specific open questions for future research to follow up.
+  In this section, we discuss the results. 
+  For the results we understand, we can provide more insight, e.g. by giving more detailed description and analysis of a model. 
+  For the results we do not understand yet, we discuss in the context of literature, and pose specific open questions for future research to follow up.
 }
+
+\appendix
+
+\section{Droplet tracking}
+
+Although the HT method can roughly detect the locations of the inner droplets, the accuracy was not satisfactory when we just use it as it was. 
+There are two major issues: 
+(i) No subpixel accuracy: all the detections are separated from each other by integer pixels; (ii) Inconsistent detection: whether the algorithm detects the inner edge or the outer edge of a droplet is not consistent, essentially because it only considers the pixel intensity gradient.
+
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{hc-correction}
+  \caption{
+  \textbf{A custom method to improve tracking accuracy of HT method.}
+  (a) Illustration of cross-boundary intensity profiles.
+  (b) Original detection (blue) and corrected detection (orange).
+  (c) Original trajectory (red) and corrected trajectory (yellow).
+  (d) Subpixel bias of original trajectory (blue) and improved trajectory (orange).
+  (e) MSD of original trajectory (blue) and improved trajectory (orange).
+  }
+  \label{fig:hc-correction}
+\end{figure}
+
+To resolve these issues, we build a custom correction method to refine the results by HT.
+In our images of droplets, we notice that all the droplets have dark edges, which may be a result of strong refraction at the edges. 
+If we draw a line from droplet center, in the radial direction, to outside the droplet (yellow lines in Fig.~\ref{fig:hc-correction}(a)), the image intensity profile along that line would likely show a valley (a dark peak, indicated as red spots in Fig.~\ref{fig:hc-correction}(a)). 
+This valley turns out to be a more unambiguous indicator of the droplet edge position. 
+By drawing multiple lines across the droplet boundary and analyzing each pixel intensity profile to get a valley position, we get the coordinates of multiple points on the
+droplet edge, from which we can fit a circle.
+As shown in Fig.~\ref{fig:hc-correction}(b), the orange circle is a result of the above fitting procedure.
+Compare to the original detection of the HT method (blue circle in Fig.~\ref{fig:hc-correction}(b)), both the size and the position are more consistent with the image. 
+Figure~\ref{fig:hc-correction}(c) shows the trajectories from both methods (red for original HT, yellow for corrected).
+Two improvements are immediately noticed: 
+(i) the corrected trajectory is generally higher, closer to the actual center of the droplet;
+(ii) the ``lattice'' like pattern in the original trajectory is absent in corrected trajectory, suggesting less subpixel bias.
+Indeed, the subpixel statistics is shown in Fig.~\ref{fig:hc-correction}, and we see considerable improvement on the subpixel bias. 
+We compared the MSD of both trajectories, as shown in Fig.~\ref{fig:hc-correction}(e).
+At short times, the corrected MSD is generally smaller, while at long times, the two MSD are indistinguishable. 
+This difference is expected: HT does not detect droplet location accurately. 
+At each step, it adds uncertainty to the detected location, making the short time displacement artificially larger.
+At long times, however, this artificial displacement becomes less important compared to the actual dispalcement, so that the two MSD converge.
+Interestingly, both MSD exhibit subdiffusive regimes at short times, suggesting that even the corrected trajectory is subject to detection noise.
+It is challenging to eliminate detection noise by further correction of the trajectories.
+Therefore, we acknowledge the presence of this noise and incorporate it in our model to fit experimental MSD.
+The results are satisfactory.  
+
 
 
 \bibliography{ref}
+
+
+
 \end{document}
 %
 % ****** End of file apssamp.tex ******
