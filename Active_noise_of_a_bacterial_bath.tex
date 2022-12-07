@@ -49,6 +49,8 @@ twocolumn,
 \usepackage{hyperref}% add hypertext capabilities
 \usepackage{siunitx}% SI units
 \newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
+\usepackage{physics}
+\usepackage{amssymb}
 
 \graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
 
@@ -151,19 +153,7 @@ Our results deepen the understanding of active matter behavior under confinement
 \end{figure*}
 
 Bacterial Culture:
-Here we used wild-type e.coli bacteria (strain  W3110). The bacteria were grown with a standard culturing protocol, 10 $\mu L$ of frozen stock stored at -20 degrees is  diluted  in 10 $mL$ of lysogenic broth (LB) and putted on a shaker at  temperature 30º, and 210 rpm overnight. The saturated culture is diluted in a proportion of $1:100$ in LB medium and let it grow until the mid-log phase of growth, which is equivalent to a optical density ($OD_{600}$) $\approx$ 0.6. Cells were harvested at 2100 $g$ for 10 min. Then the supernatant is removed, and the pellet is resuspended in minimal motility buffer (MMA).  This allows the bacteria to swim but do not divide.  A volume of $10 \mu L$ is added in $1 mL$ of Hexadecane containing 2% weight Span 80 as a surfractant. The mixture is mannually agitated and the diluted 1:10 in 1 mL of Hexadecane. Then 200 $uL$ of the emulsion is putted in a square observation chamber of $L = 1 cm$  and height $h=400\mu m$. The chamber are fabricated in a SU-8 photoresist (Gersteltec GM 1075) with optical lithography on a 50.8 $mm$ diameter glass wafer.
-
-In this work, we study the agitation due to a suspension of bacteria \textit{E.coli} confined on a double emulsion-bacterial shell shown in Fig.~\ref{montaje_doble}.
-
-The bacterial suspension is encapsulated in a double emulsion, where an oil droplet gets trapped inside a water-in-oil emulsion.
-We show that the inner oil droplet performs a persistent random walk for short times and a saturation regime for large times.
-The bacteria used is a wild-type \ecoli~(RP437)  which contains a plasmid to express the green fluorescence protein (GFP), and  \ecoli~(W3110) which is also genetically modified to express the green fluorescence protein (GFPmut2).  Both strains have the same features (e.g., run and tumble), but the difference is how they express the GFP.
-
-The bacteria were grown using a standard protocol, washed, and re-suspended in a motility medium, allowing the bacteria to swim but not divide.
-The final concentration of the bacterial suspension ranges from $OD_{600} = 0.7$ to $OD_{600} = 150$.
-A volume of 10 $\mu$L of the bacterial suspension is added to 1 mL of hexadecane containing 2 wt\% Span 80 (Sigma-Aldrich, S6760) as a surfactant.
-The mixture is manually shacking, resulting in an emulsion of aqueous droplets containing the bacterial suspension in oil; also, less commonly, bacterial droplets will form with a drop of oil inside, i.e. a double emulsion.
-The observation setup is a square chamber of inner side $L = 1$ cm and height $h = 400$ $\mu$m. The chamber walls are fabricated in SU-8 photoresist (Gersteltec GM 1075) with optical lithography (Heidelberg Instruments MLA 100) on a 50.8 mm diameter and 500 $\mu$m thick circular glass wafer.
+Here we used wild-type e.coli bacteria (strain  W3110). The bacteria were grown with a standard culturing protocol, 10 $\mu L$ of frozen stock stored at -20 degrees is  diluted  in 10 $mL$ of lysogenic broth (LB) and putted on a shaker at  temperature 30º, and 210 rpm overnight. The saturated culture is diluted in a proportion of $1:100$ in LB medium and let it grow until the mid-log phase of growth, which is equivalent to a optical density ($OD_{600}$) $\approx$ 0.6. Cells were harvested at 2100 $g$ for 10 min. Then the supernatant is removed, and the pellet is resuspended in minimal motility buffer (MMA).  This allows the bacteria to swim but do not divide.  A volume of $10 \mu L$ is added in $1 mL$ of Hexadecane containing 2\% weight Span 80 as a surfractant. The mixture is mannually agitated and the diluted 1:10 in 1 mL of Hexadecane. Then 200 $uL$ of the emulsion is putted in a square observation chamber of $L = 1 cm$  and height $h=400\mu m$. The chamber are fabricated in a SU-8 photoresist (Gersteltec GM 1075) with optical lithography on a 50.8 $mm$ diameter glass wafer.
 As the aqueous bacterial suspension is denser than the ambient hexadecane, drops sediment to the bottom of the chamber.
 The inner droplet rises by the buoyancy to the top of the bacterial droplet.
 For the measurements in the XY plane, the chamber is placed on an inverted microscope (Nikon TS100F), observed with a 60X objective, and filmed at 10--100 Hz.
@@ -368,6 +358,34 @@ Therefore, it is necessary to verify the steady state of experiment.
 % Idea is to align some simulation results with experimental results.
 % The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
 % If there are new results from simulation, we can get together to discuss what to include in this section.
+\subsection*{Model and Langevin equation}
+% Here I will write the details of the model, and then summarize that in the main text.
+It can be shown that a Colored noise is produced by a random motion with white noise, eg, an Uhlenbeck-Ornstein process:
+\begin{align}
+  \dot{u}&=-\frac{u}{\tau}+\frac{\xi(t)}{\tau}\\
+\end{align}
+Where $\xi(t)$ is a white noise with zero mean and variance delta:
+\begin{align}
+  \langle \xi(t)\rangle &=0,\\
+  \langle \xi(t)\xi(t')\rangle &=2\frac{v^2}{\tau}\delta(t-t').
+\end{align}
+Using Laplace transform, the solution is:
+\begin{align}
+  u(t)=\int \dd s e^{-(t-t')/\tau}\xi(s).
+\end{align}
+
+Now we can compute the first and second moment of $u(t)$. 
+\begin{align}
+  \langle u(t)\rangle = \int_{-\infty}^{t} \dd s e^{-(t-t')} \langle \xi(s)\rangle =0.
+\end{align}
+
+\begin{align}
+  \langle u(t)u(t')\rangle &= \langle \int_{-\infty}^{t} \dd{s_1} \int_{-\infty}^{t'} \dd s_2 e^{-(s_1-t)/\tau} e^{-(s_2-t')/\tau} \xi(s_1)\xi(s_2)\rangle\\
+  &= \int_{-\infty}^{t}  \dd{s_1} \int_{-\infty}^{t'} \dd s_2 e^{-(s_1-t)/\tau} e^{-(s_2-t')/\tau} \langle \xi(s_1)\xi(s_2) \rangle,\\
+  &= 2\frac{v^2}{\tau}\int_{-\infty}^{t}  \dd{s_1} \int_{-\infty}^{t'} \dd s_2 e^{-(s_1-t)/\tau} e^{-(s_2-t')/\tau} \delta(s_1-s_2),\\
+\end{align}
+
+
 
 
 \bibliography{ref}
