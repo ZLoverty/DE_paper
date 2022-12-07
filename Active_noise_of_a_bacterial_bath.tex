@@ -48,7 +48,10 @@ twocolumn,
 \usepackage{xcolor}
 \usepackage{hyperref}% add hypertext capabilities
 \usepackage{siunitx}% SI units
-\newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
+\newcommand{\ecoli}[0]{~\textit{E. coli}~} % use \ecoli command to correctly typeset italic E. coli
+\newcommand{\degreec}[0]{$^\circ$C}
+\newcommand{\ul}[0]{$\mu$l}
+\newcommand{\um}[0]{$\mu$m}
 
 \graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
 
@@ -150,28 +153,41 @@ Our results deepen the understanding of active matter behavior under confinement
   \label{montaje_doble}
 \end{figure*}
 
-Bacterial Culture:
-Here we used wild-type e.coli bacteria (strain  W3110). The bacteria were grown with a standard culturing protocol, 10 $\mu L$ of frozen stock stored at -20 degrees is  diluted  in 10 $mL$ of lysogenic broth (LB) and putted on a shaker at  temperature 30º, and 210 rpm overnight. The saturated culture is diluted in a proportion of $1:100$ in LB medium and let it grow until the mid-log phase of growth, which is equivalent to a optical density ($OD_{600}$) $\approx$ 0.6. Cells were harvested at 2100 $g$ for 10 min. Then the supernatant is removed, and the pellet is resuspended in minimal motility buffer (MMA).  This allows the bacteria to swim but do not divide.  A volume of $10 \mu L$ is added in $1 mL$ of Hexadecane containing 2% weight Span 80 as a surfractant. The mixture is mannually agitated and the diluted 1:10 in 1 mL of Hexadecane. Then 200 $uL$ of the emulsion is putted in a square observation chamber of $L = 1 cm$  and height $h=400\mu m$. The chamber are fabricated in a SU-8 photoresist (Gersteltec GM 1075) with optical lithography on a 50.8 $mm$ diameter glass wafer.
+\subsection{Bacterial culture}
 
-In this work, we study the agitation due to a suspension of bacteria \textit{E.coli} confined on a double emulsion-bacterial shell shown in Fig.~\ref{montaje_doble}.
+Wild-type \ecoli bacteria (strain  W3110) were grown with a standard culturing protocol \cite{Keymer2008}.
+10 \ul~of frozen stock stored at -20\degreec~was diluted in 10 ml of lysogenic broth (LB) and incubated overnight in a shaking incubator at temperature 30\degreec~and 210 rpm. 
+The overnight culture was then diluted in 100 times in LB and let grow for 3.5 hours to reach the optical density at 600 nm (OD) of $0.6\pm 0.1$. 
+Bacteria were harvested by centrifuging the suspensions at 2100 $g$ for 10 min. 
+Then the supernatant was removed, and the pellet was resuspended in a minimal motility buffer, MMA (10 mM potassium phosphate, 0.1 mM EDTA and 10 mM sodium lactate \cite{Minamino2003}).
+\textcolor{red}{In the droplet experiments, I used the MB described in Eric's protocol. The most nominal difference is the addition of L-serine.} 
+In MMA, bacteria are allowed to swim, but not to divide. 
+The final concentration of the bacterial suspensions ranges from $OD = 0.7$ to $OD = 100$.
+\subsection{Double emulsion}
 
-The bacterial suspension is encapsulated in a double emulsion, where an oil droplet gets trapped inside a water-in-oil emulsion.
-We show that the inner oil droplet performs a persistent random walk for short times and a saturation regime for large times.
-The bacteria used is a wild-type \ecoli~(RP437)  which contains a plasmid to express the green fluorescence protein (GFP), and  \ecoli~(W3110) which is also genetically modified to express the green fluorescence protein (GFPmut2).  Both strains have the same features (e.g., run and tumble), but the difference is how they express the GFP.
+Double emulsions were produced by mechanical mixing of the aqueous bacterial suspension and hexadecane (Sigma-Aldrich, H6703).
+10 \ul~bacterial suspension was added to 1 ml hexadecane containing 2 wt\% Span 80 (Sigma-Aldrich, S6760) as a surfractant. 
+1 wt\% polyvinyl alcohol (PVA, $M_w$ 13,000-23,000, Sigma-Aldrich, 363170) was supplemented to the oil phase to stabilize the inner droplets.
+The mixture is mannually agitated to form many aqueous droplets in oil, among which 10\% are with another oil droplet inside.
+Since this is an emulsion inside another emulsion, we term this experimental system a double emulsion, which is illustrated in Fig.~\ref{montaje_doble}(a).
+The double emulsion was then diluted 1:10 in hexadecane for observaton.
+This dilution ensured enough space between droplets, so that hydrodynamic interactions can be neglected. 
 
-The bacteria were grown using a standard protocol, washed, and re-suspended in a motility medium, allowing the bacteria to swim but not divide.
-The final concentration of the bacterial suspension ranges from $OD_{600} = 0.7$ to $OD_{600} = 150$.
-A volume of 10 $\mu$L of the bacterial suspension is added to 1 mL of hexadecane containing 2 wt\% Span 80 (Sigma-Aldrich, S6760) as a surfactant.
-The mixture is manually shacking, resulting in an emulsion of aqueous droplets containing the bacterial suspension in oil; also, less commonly, bacterial droplets will form with a drop of oil inside, i.e. a double emulsion.
-The observation setup is a square chamber of inner side $L = 1$ cm and height $h = 400$ $\mu$m. The chamber walls are fabricated in SU-8 photoresist (Gersteltec GM 1075) with optical lithography (Heidelberg Instruments MLA 100) on a 50.8 mm diameter and 500 $\mu$m thick circular glass wafer.
-As the aqueous bacterial suspension is denser than the ambient hexadecane, drops sediment to the bottom of the chamber.
-The inner droplet rises by the buoyancy to the top of the bacterial droplet.
-For the measurements in the XY plane, the chamber is placed on an inverted microscope (Nikon TS100F), observed with a 60X objective, and filmed at 10--100 Hz.
-For the XZ plane, when the emulsion is made, it is collected into a 1 mm square capillary and observed using an inverted confocal microscope with a 40X objective, filming at 50--70 Hz with a camera mounted on the microscope.
-Besides, the confocal microscope can be rotated, which allows us to observe the drops from the side instead of the top-bottom sight.
-In Fig.~\ref{montaje_doble}(a), we show the coordinates defined on the double emulsion, where Fluid A is hexadecane, and fluid B is the bacterial suspension.
-The inner droplet moves randomly due to the bacterial suspension [Fig.~\ref{montaje_doble}(b)], without the bacterial suspension, due to the size of the internal drop, it would not be able to move due to thermal fluctuations.
-In the bottom row of Fig.~\ref{montaje_doble}(b), we can see that the inner droplets remain in the top part of the droplet.
+\subsection{Microscopy}
+
+The same photoprinted square observation chamber was used in this work (described in \citet{Ramos2020}).
+The chamber was loaded with 200~\ul~of the double emulsion and subsequently sealed with a coverslip to minimize evaporation.
+Due to density mismatch between water and hexadecane, the aqueous droplets sedimented to the bottom of the chamber, while the inner oil droplets floated to the top of the aqueous droplets.  
+The chamber was then placed on an inverted microscope (Nikon Ti-XX) and the double emulsions were filmed with XX camera at 50-70 Hz.
+The $xz$-plane observation was achieved by a microscope sitting on a rotating ``cradle'' (described in XX). 
+Magnifications ranging from 20X to 60X were used in our experiments, depending on the size of the droplets. 
+Figures~\ref{montaje_doble}(b) and (c) show some snapshots of $xy$-plane and $xz$-plane videos, respectively. 
+
+\subsection{Image analysis}
+
+Droplet tracking was done with a method based on Hough Transform (HT), a common technique for feature extraction \cite{Stockman2001}. 
+The results were refined by a custom Python code, which will be discussed in the appendix.
+Particle image velocimetry (PIV) was performed using OpenPIV package in Python \cite{OpenPIV}, for characterizing bacterial activity in droplets.
 
 \section{1D model}
 % I rewrite the 1D model part based on the overleaf version to serve as a reference for the discussions of the results.
@@ -315,15 +331,16 @@ Interestingly, $\tau^*$ at different OD's are quite consistent in magnitude.
 
 The confinement effect on the active diffusivity may be correlated with the bacterial activity.
 Indeed, we frequently observed very different activity at the same bacterial concentration.
-In order to quantify the activity, we perform particle image velocimetry (PIV) analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
-Formally, we obtain velocity magnitude field $\mathbb{V}=\{V_{ij}\}$ from PIV.
+In order to quantify the activity, we perform PIV analysis on the bright field images of active double emulsions and use the root mean square of the PIV velocity magnitude as a measure of activity.
+Formally, we obtain velocity magnitude field $\mathbb{V}=\{\bm{V}_{i}\}$ from PIV.
 The mean velocity $\overline V$ is defined as
 %
 \begin{equation}
-    \overline V = \sqrt{\frac{1}{n}\sum_{ij} V_{ij}^2}.
+    \overline V = \sqrt{\frac{1}{N}\sum_{i}^N |\bm{V}_{i}|^2}.
 \end{equation}
 %
-To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. In the data presented here, all the PIV analysis are performed with OpenPIV (version 0.24.2). We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
+To suppress noise from the detection, mean velocities are measured in each pair of frames and then averaged. 
+We fix the interrogation window size at 20 pixels throughout all the analyses, with overlap between adjacent windows at 10 pixels.
 
 \begin{figure}[!t]
   \includegraphics[width=\columnwidth]{bacterial-activity}
@@ -358,17 +375,80 @@ We hope to use this phenomenon as a support of our argument that confinement aff
 However, even if this support turns out to be weak, we still can publish this phenomenon on its own, because it's new.
 }
 
+It is of key importance to ensure steady state in all active matter experiment.
+For bacterial systems, this is particularly challenging, due to the fact that bacteria are very sensitive to their environment, which can change rapidly due to the massive metabolic activities. 
+Our experiment typically produce 10-minute videos of active double emulsions. 
+A typical bacterial sample used in our experiment, however, can only last around an hour, before the activity decay becomes apparent. 
+Therefore, it is necessary to verify the steady state of experiment. 
+
 \subsection{Numerical simulation}
-% Idea is to align some simulation results with experimental results.
-% The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
-% If there are new results from simulation, we can get together to discuss what to include in this section.
+\textcolor{blue}{
+In this section, we report the results from numerical simulation of droplet motions. 
+The idea is to align some simulation results with experimental results, e.g. confinement effect. 
+The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters. 
+If there are new results from simulation, we can get together to discuss what to include in this section.}
+
+\section{Discussions}
+
+\textcolor{blue}{
+  In this section, we discuss the results. 
+  For the results we understand, we can provide more insight, e.g. by giving more detailed description and analysis of a model. 
+  For the results we do not understand yet, we discuss in the context of literature, and pose specific open questions for future research to follow up.
+}
+
+\appendix
+
+\section{Droplet tracking}
+
+Although the HT method can roughly detect the locations of the inner droplets, the accuracy was not satisfactory when we just use it as it was. 
+There are two major issues: 
+(i) No subpixel accuracy: all the detections are separated from each other by integer pixels; (ii) Inconsistent detection: whether the algorithm detects the inner edge or the outer edge of a droplet is not consistent, essentially because it only considers the pixel intensity gradient.
+
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{hc-correction}
+  \caption{
+  \textbf{A custom method to improve tracking accuracy of HT method.}
+  (a) Illustration of cross-boundary intensity profiles.
+  (b) Original detection (blue) and corrected detection (orange).
+  (c) Original trajectory (red) and corrected trajectory (yellow).
+  (d) Subpixel bias of original trajectory (blue) and improved trajectory (orange).
+  (e) MSD of original trajectory (blue) and improved trajectory (orange).
+  }
+  \label{fig:hc-correction}
+\end{figure}
+
+To resolve these issues, we build a custom correction method to refine the results by HT.
+In our images of droplets, we notice that all the droplets have dark edges, which may be a result of strong refraction at the edges. 
+If we draw a line from droplet center, in the radial direction, to outside the droplet (yellow lines in Fig.~\ref{fig:hc-correction}(a)), the image intensity profile along that line would likely show a valley (a dark peak, indicated as red spots in Fig.~\ref{fig:hc-correction}(a)). 
+This valley turns out to be a more unambiguous indicator of the droplet edge position. 
+By drawing multiple lines across the droplet boundary and analyzing each pixel intensity profile to get a valley position, we get the coordinates of multiple points on the
+droplet edge, from which we can fit a circle.
+As shown in Fig.~\ref{fig:hc-correction}(b), the orange circle is a result of the above fitting procedure.
+Compare to the original detection of the HT method (blue circle in Fig.~\ref{fig:hc-correction}(b)), both the size and the position are more consistent with the image. 
+Figure~\ref{fig:hc-correction}(c) shows the trajectories from both methods (red for original HT, yellow for corrected).
+Two improvements are immediately noticed: 
+(i) the corrected trajectory is generally higher, closer to the actual center of the droplet;
+(ii) the ``lattice'' like pattern in the original trajectory is absent in corrected trajectory, suggesting less subpixel bias.
+Indeed, the subpixel statistics is shown in Fig.~\ref{fig:hc-correction}, and we see considerable improvement on the subpixel bias. 
+We compared the MSD of both trajectories, as shown in Fig.~\ref{fig:hc-correction}(e).
+At short times, the corrected MSD is generally smaller, while at long times, the two MSD are indistinguishable. 
+This difference is expected: HT does not detect droplet location accurately. 
+At each step, it adds uncertainty to the detected location, making the short time displacement artificially larger.
+At long times, however, this artificial displacement becomes less important compared to the actual dispalcement, so that the two MSD converge.
+Interestingly, both MSD exhibit subdiffusive regimes at short times, suggesting that even the corrected trajectory is subject to detection noise.
+It is challenging to eliminate detection noise by further correction of the trajectories.
+Therefore, we acknowledge the presence of this noise and incorporate it in our model to fit experimental MSD.
+The results are satisfactory.  
+
 
 
 \bibliography{ref}
+
+
+
 \end{document}
 %
 % ****** End of file apssamp.tex ******
-
 
 
 
