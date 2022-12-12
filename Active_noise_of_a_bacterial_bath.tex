@@ -50,8 +50,12 @@ twocolumn,
 \usepackage{siunitx}% SI units
 \newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
 \usepackage{physics}
-\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+ \usepackage{amsmath,amsfonts,amssymb}%
 
+\AtBeginDocument{\renewcommand*{\d}{\mathop{\kern0pt\mathrm{d}}\!{}}}
 \graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
 
 % Some formatting guidelines
