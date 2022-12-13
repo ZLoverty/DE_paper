@@ -449,7 +449,44 @@ When the particle is outside the sphere a tangent plane is computed in the surfa
   }
   \label{fig:reflective_boundary}
 \end{figure}
+\label{Reflective.Boundary.condition}
+    \section{Algorithm reflective boundary condition}
 
+The reflective boundary condition for the spherical confinement is: if the particle is outside the sphere, that is, $z^2+y^2+x^2>r^2$ reflect that position inside the sphere. 
+To do that, after the compute the position of the inner droplet we impose the condition that the norm of the position is less than one, the radius of the outer droplet. 
+The procedure is the following:
+\begin{enumerate}
+    \item Determine if a point is outside of the sphere, that is \\ $||xyz|| = \sqrt{(x-x_0)^2+(y-y_0)^2+(z-z_0)^2} > 1$.
+    \item If there are no points outside of the sphere, then go back to step 1.
+    \item For each point outside the sphere, find the intersection of its path with the sphere. For this we consider the equation of the sphere with center in zero, $x^2+y^2+z^2=1$.
+    \item The vector will have a starting point $(x_0,y_0,z_0)$ and ending point $(x_1,y_1,z_1)$.
+    \item The points along the line through these three points will be given in parametric form by:
+    \begin{align}
+        x(t)&= (x_1-x_0)t+x_0,\\
+        y(t)&=(y_1-y_0)t+y_0,\\
+        z(t)&=(z_1-z_0)t+z_0.
+    \end{align}
+    where $t$ is a real number between $0<t<1$. Now if we substitute for $x,y,z$ in the equation of the sphere. The parametrized expression we get a quadratic equation for $t$.
+    \item After collecting terms we have:
+    \begin{align}
+        at^2+bt+c=0,
+    \end{align}
+    with 
+   \begin{align}
+       a&=(x_1-x_0)^2+(y_1-y_0)^2+(z_1-z_0)^2,\\
+       b&= 2(x_1-x_0)x_0+2(y_1-y_0)y_0+2(z_1-z_0)z_0,\\
+       c&= x_0^2+y_0^2+z_0^2.
+   \end{align} 
+   And the roots for $t$ may be found with the quadratic formula                              $t=\frac{-b \pm \sqrt{b^2-4ac}}{2a}=\frac{2c}{-b \pm \sqrt{b^2-4ac}}$. We will use the second form to avoid $a=0$.
+
+   \item Now we have to find the tangent plane of the sphere at the intersection point. For the case of the circle this is easy, because we can draw a line from the center of the circle to the intersection point on the circle. The negative  inverse of the slope of this line is the slope of the tangent line to the curve at the intersection point. Combining this with the intersection point we have a line. And then we can reflect the point that its outside across this tangent line. But for 3D the notion of slope its different so I used another approach to find the reflection point across the tangent plane. 
+   \item After find the intersection point with $xyz_{inter}= xyz_0 + (xyz_1-xyz_0)t=N(x_2,y_2,z_2)$, we keep the closest to the point outside the sphere. This new point $N(x_2,y_2,z_2)$ is the intersection point, and we have the point $P(x_1,y_1,z_1)$ which is outside the sphere.
+  \item Find the vector from the intersection point to the new point $\mathbf{v}=xyz-N$ and then find the reflection of the vector $\mathbf{a}$ with respect to the tangent line at the intersection point, that is, $xyz =xyz-\frac{2(N \cdot v)}{||N||^2}N$. 
+  
+  \item Now we have a particle that moves randomly confined in a sphere. 
+
+
+\end{enumerate}
 
 %\begin{equation}\label{eq:dual_algo}
  % \begin{aligned}
@@ -527,6 +564,7 @@ After detection, on the raw data the data can be smoothed to remove small fluctu
 \label{smoothdata}
 
 
+
 \bibliography{ref}
 
 
@@ -534,9 +572,6 @@ After detection, on the raw data the data can be smoothed to remove small fluctu
 \end{document}
 %
 % ****** End of file apssamp.tex ******
-
-
-
 
 
 
