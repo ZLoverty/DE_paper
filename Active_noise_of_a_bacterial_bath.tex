@@ -48,11 +48,18 @@ twocolumn,
 \usepackage{xcolor}
 \usepackage{hyperref}% add hypertext capabilities
 \usepackage{siunitx}% SI units
-\newcommand{\ecoli}[0]{~\textit{E. coli}~} % use \ecoli command to correctly typeset italic E. coli
+\usepackage{physics}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,amssymb}
+
+\newcommand{\ecoli}[0]{\textit{E. coli}} % use \ecoli command to correctly typeset italic E. coli
 \newcommand{\degreec}[0]{$^\circ$C}
 \newcommand{\ul}[0]{$\mu$l}
 \newcommand{\um}[0]{$\mu$m}
 
+\AtBeginDocument{\renewcommand*{\d}{\mathop{\kern0pt\mathrm{d}}\!{}}}
 \graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
 
 % Some formatting guidelines
@@ -382,11 +389,73 @@ A typical bacterial sample used in our experiment, however, can only last around
 Therefore, it is necessary to verify the steady state of experiment. 
 
 \subsection{Numerical simulation}
-\textcolor{blue}{
-In this section, we report the results from numerical simulation of droplet motions. 
-The idea is to align some simulation results with experimental results, e.g. confinement effect. 
-The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters. 
-If there are new results from simulation, we can get together to discuss what to include in this section.}
+% Idea is to align some simulation results with experimental results.
+% The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
+% If there are new results from simulation, we can get together to discuss what to include in this section.
+\subsection*{Model and Langevin equation}
+% Here I will write the details of the model, and then summarize that in the main text.
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{DEScheme.png}
+  \caption{
+  Mean PIV velocity $\overline V$ as a measure of bacterial activity, plotted against outer droplet radius $r_o$.
+  }
+  \label{fig:DE_scheme}
+\end{figure}
+ To describe the motion of a particle of density $\rho_i$, radii $r_i$ immersed in a bacterial bath with viscosity $\eta$ and density $\rho_0$ which is confined in a spherical domain of radii $r_o$ and density $\rho_0$, as we shown in the figure (\ref{fig:DE_scheme}).
+ We propose a Langevin equation with an active noise produced by the bacterial bath and reflective boundary condition. 
+ This noise is modeled as an colored noise with zero mean.
+ The boundary condition for the particle can be written as follow: $x^2+y^2+z^2\leq (r_o-r_i)^2$, which mean that in any time $t$ the particle is inside the sphere.  
+The equation of motion in the limit of low Reynolds number is the following:
+\begin{align}
+  \label{eq.Langevin_num}
+  \mathbf{\dot{r}}=\mathbf{u}(t)-\tilde{v}\mathbf{\hat{z}}.
+\end{align}
+where  $\tilde{v}=2\pi r_i^2 \delta\rho/9\eta$ is the sedimentation velocity of the particle.
+It can be shown that a Colored noise is produced by a random motion with white noise, eg, an Uhlenbeck-Ornstein process:
+\begin{align}
+  \dot{u}&=-\frac{u}{\tau}+\frac{\xi(t)}{\tau}\\
+\end{align}
+Where $\xi(t)$ is a white noise with zero mean and variance delta:
+\begin{align}
+  \langle \xi(t)\rangle &=0,\\
+  \langle \xi(t)\xi(t')\rangle &=2\frac{v^2}{\tau}\delta(t-t').
+\end{align}
+Using Laplace transform, the solution for $t>0$ is:
+\begin{align}
+  u(t)=u_0e^{-t/\tau}+\int_0^{t} \dd s \ e^{-(t-t')/\tau}\xi(s).
+\end{align}
+ The second moment is:
+\begin{align}
+  \langle u(t)u(t')\rangle &=v^2e^{-|t-t'|/\tau}. 
+\end{align}
+Which is the velocity autocorrelation function of this velocity field.
+To solve this system numerically, we used the Euler-Maruyama method for stochastic differencial equations.
+As we mention before, we can produce an exponentially time correlated noise from a Ornstein-Uhlenbeck process.
+Using Euler, we solve for the position of the particle and the noise for the time step $n$.
+\begin{align}
+   \label{eq:Euler_method}
+   x_n&=x_{n-1}+u_{x_{n-1}}\dd t,\\
+   y_n&=y_{n-1}+u_{y_{n-1}}\dd t,\\
+   z_n&=z_{n-1}+u_{z_{n-1}-\tilde{v}}\dd t,\\
+   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n}
+\end{align}
+Where $N^{i}_n$ is a random number with zero mean and variance one. For the spherical confinement we use a reflective boundary condition. 
+That is, at each time step the algorithm compute the norm of the position of the particle and checks whether the particle has moved outside the sphere. 
+When the particle is outside the sphere a tangent plane is computed in the surface of the sphere in the position where crossed the surface, and then the particle is reflected respect to the tangent plane. 
+\begin{figure}[!h]
+  \includegraphics[width=5cm]{ReflectiveBoundary.png}
+  \caption{
+  Reflective boundary condition.
+  }
+  \label{fig:reflective_boundary}
+\end{figure}
+
+
+%\begin{equation}\label{eq:dual_algo}
+ % \begin{aligned}
+  %  \langle u(t)u(t+s)\rangle &=\langle \int_{0}^{t}\dd s_1 \ \int_{0}^{t+s}\dd s_2 \ \rangle  
+  %\end{aligned}
+  %\end{equation}
 
 \section{Discussions}
 
@@ -439,6 +508,7 @@ Interestingly, both MSD exhibit subdiffusive regimes at short times, suggesting 
 It is challenging to eliminate detection noise by further correction of the trajectories.
 Therefore, we acknowledge the presence of this noise and incorporate it in our model to fit experimental MSD.
 The results are satisfactory.  
+
 
 
 
