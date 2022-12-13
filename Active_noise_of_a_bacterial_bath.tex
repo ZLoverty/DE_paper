@@ -409,8 +409,9 @@ Using Euler, we solve for the position of the particle and the noise for the tim
    z_n&=z_{n-1}+u_{z_{n-1}-\tilde{v}}\dd t,\\
    u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n}
 \end{align}
-Where $N^{i}_n$ is a random number with zero mean and variance one. For the spherical confinement we use a reflective boundary condition. That is, at each time step the algorithm compute the norm of the position of the particle and checks whether the particle has moved outside the sphere. When the particle is outside the sphere a tangent plane is computed in the surface of the sphere in the position where crossed the surface, and then the particle is reflected respect to the tangent plane. 
-
+Where $N^{i}_n$ is a random number with zero mean and variance one. For the spherical confinement we use a reflective boundary condition. 
+That is, at each time step the algorithm compute the norm of the position of the particle and checks whether the particle has moved outside the sphere. 
+When the particle is outside the sphere a tangent plane is computed in the surface of the sphere in the position where crossed the surface, and then the particle is reflected respect to the tangent plane. 
 \begin{figure}[!h]
   \includegraphics[width=5cm]{ReflectiveBoundary.png}
   \caption{
