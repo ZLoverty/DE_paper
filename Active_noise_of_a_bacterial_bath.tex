@@ -509,7 +509,22 @@ It is challenging to eliminate detection noise by further correction of the traj
 Therefore, we acknowledge the presence of this noise and incorporate it in our model to fit experimental MSD.
 The results are satisfactory.  
 
+\section{Image analysis}
+\label{img.analisis}
+Videos are shot between 30-70 fps, with the majority shot at 50 fps for 10 minutes, therefore, to extract the position of the outer and inner droplet we have to analyze about 30000 images. To do that, we made a tracking script in Matlab thats detect both droplets using a Matlab function  called \textit{imfindcircles}. This function finds circles of given radius range and with certain contrast. So we can find dark circles or bright circles of given radii, more parameters can be added to the function, such as sensitivity. The steps to perform the detection of the droplets are summarized in the figure (\ref{Deteccion}). The steps to track the droplets  are: The initial image is cropped  to make detection less resource-intensive, the Matlab \textit{Drawcircle} function is used on this image  to compute the diameter and center of the outer and inner  droplet. From the center and radii of the inner droplet we make a template of the inner droplet with a size of  1.2 times the  inner radii. Now we perform some image adjustments to increase the contrast  and  make the detection easier.  Then using the function \texttt{imfindcircles} for the inner droplet and the outer droplet. For the inner droplet we give to the function a parameter of the radios  $r_{i} \pm$\texttt{delta}, where \texttt{delta} is a constant times the radius detected in the image $k-1$.  We are detecting the inner droplet in the template image, in the step $k$ the template image is compared with the image in the step $k-1$ using the crosscorrelation function \texttt{corr2}.   This function gives a value between $[0-1]$, if this value is $1$ then the image is identical to the image  in the step before. We put the condition if this value is less than 0.5 then increase the value of  \texttt{delta} and so on. The function \texttt{imfindcircles} will detect in a ranges of radius, so in two consecutive image this value of radius can change and therefore change the center of the inner droplet in a small quantity. 
 
+\begin{figure}[b!]
+	\begin{center}
+		\includegraphics[width=\columnwidth]{proceso_deteccion.pdf}	
+\caption[Detection]{\small{\textbf{Tracking. -} From left to right: The initial image is cropped.  Then draw two circles to calculate the diameters of the drops. An inner droplet template is created with a size of 1.2 times the radii of the inner droplet. Then we detect the outer drop using \textit{imfindcircles} over the cropped image and the same over the template of the inner  droplet.   }}
+		\label{Deteccion}
+	\end{center}
+\end{figure}
+
+After detection, on the raw data the data can be smoothed to remove small fluctuations, but the question now arises, how much can we smooth so as not to remove information about the internal droplet motion?.
+
+\subsection{Smoothdata analysis}
+\label{smoothdata}
 
 
 \bibliography{ref}
