@@ -240,7 +240,7 @@ with the short and long time limits given by:
     \lim_{t\to\infty} \langle \Delta x^2(t)\rangle & =\frac{\tilde{D}(\tau^*)^2}{\tilde{\tau}+\tau}.
 \end{align}
 %
-We can see that the MSD is ballistic at short times andsaturates to a constant value at long times due to the confinement imposed by the harmonic potential. In Fig.~\ref{fig:msd-1d-model} we show two plots of the Eq.~\ref{eq.MSD_1d} for different values of $\tilde{\tau}$ while keeping $\tau$ fixed, and different $\tau$ while keeping $\tilde{\tau}$ fixed.
+We can see that the MSD is ballistic at short times and saturates to a constant value at long times due to the confinement imposed by the harmonic potential. In Fig.~\ref{fig:msd-1d-model} we show two plots of the Eq.~\ref{eq.MSD_1d} for different values of $\tilde{\tau}$ while keeping $\tau$ fixed, and different $\tau$ while keeping $\tilde{\tau}$ fixed.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{model-msd-illustration}
@@ -573,114 +573,117 @@ The videos will show the result of the detection of the internal droplet, the di
 	\caption{Example analysis of a video, x-position and velocity autocorrelation function for different values of smoothdata and for smoothn function without any input and with robust method}.
 	\label{Datos_videos}
 \end{figure}
-
+\newpage
+\onecolumngrid
 \section{MSD computation}
+\begin{equation}
+	\label{langevin}
+	\dot{x}=u(t)-\frac{1}{\tilde{\tau}} x,
+\end{equation} 
+We can solve this using the Laplace transform, then $x(t)$ is:
+\begin{equation}
+	x(t)  = x_0 e^{-\frac{1}{\tilde{\tau}} t}+\int_{0}^{t}e^{-\frac{1}{\tilde{\tau}}(t-s)}u(s)\, ds,
+\end{equation}
+We will assume that the noise autocorrelation is of the form $\left<u(t)u(t')\right>=v_b^2e^{-|t-t'|/\tau}$, where $v_b^2$ is the noise amplitude and $\tau$ is the persistence time. Also, we will assume that the initial position is independent of the noise, $\left<x(0)u(t)\right>=0$. Having this we can compute the mean square displacement (MSD) as:
+\begin{equation}
+	\left<\Delta x^2\right>=2e^{-\frac{1}{\tilde{\tau}} t} \int_{0}^{t}ds\, e^{-\frac{1}{\tilde{\tau}}(t-s)}\left<x(0)u(t)\right> +\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\frac{1}{\tilde{\tau}}(t-s_1)}e^{-\frac{1}{\tilde{\tau}}(t-s_2)}u(s_1)u(s_2)
+\end{equation}
+\begin{equation}
+	\left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\frac{1}{\tilde{\tau}}(t-s_1)}e^{-\frac{1}{\tilde{\tau}}(t-s_2)}u(s_1)u(s_2)\, ds_1 ds_2
+\end{equation}
+\begin{equation}
+	\left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t}ds_1 \, ds_2\, e^{-\frac{1}{\tilde{\tau}}(t-s_1)}e^{-\frac{1}{\tilde{\tau}}(t-s_2)}e^{-|s_1-s_2|/\tau},
+\end{equation}
+for the integration, we will use:\\
+\includegraphics[width=3cm]{Integracion.png}\\
+and the integral change as$\int_{0}^{t} ds_1 \int_{0}^{t} ds2= 2 \int_{0}^{t}ds_1 {\int_{0}^{s_1}}  ds_2$, with  $s_1>s_2$ and then $e^{-|s_1-s_2|/\tau}=e^{-(s_1-s_2)/\tau}$.
+we have: 
 
 \begin{equation}
-  \label{langevin}
-  \dot{x}=u(t)-\gamma x,
-  \end{equation} 
-  We can solve this using the Laplace transform, then $x(t)$ is:
-  \begin{equation}
-  x(t)  = x_0 e^{-\gamma t}+\int_{0}^{t}e^{-\gamma(t-s)}u(s)\, ds,
-  \end{equation}
-  We will assuume that the noise autocorrelation are of the form $\left<u(t)u(t')\right>=Ae^{-|t-t'|/\tau}$, where A is the noise amplitude and $\tau$ is the persistence time. Also we will assume that the initial position is independent of the noise, $\left<x(0)u(t)\right>=0$. Having this we can compute the mean square displacement (MSD) as:
-  \begin{equation}
-  \left<\Delta x^2\right>=2e^{-\gamma t} \int_{0}^{t}ds\, e^{-\gamma(t-s)}\left<x(0)u(t)\right> +\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}u(s_1)u(s_2)
-  \end{equation}
-  \begin{equation}
-  \left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}u(s_1)u(s_2)\, ds_1 ds_2
-  \end{equation}
-  \begin{equation}
-  \left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t}ds_1 \, ds_2\, e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}e^{-|s_1-s_2|/\tau},
-  \end{equation}
-  for the integration we will use :\\
-  \includegraphics[width=5cm]{Figuras/Integracion.png}\\
-  and the integral change as$\int_{0}^{t} ds_1 \int_{0}^{t} = 2 \int_{0}^{t}ds_1 {\int_{0}^{s_1}}  ds_2$, with  $s_1>s_2$ and then $e^{-|s_1-s_2|/\tau}=e^{-(s_1-s_2)/\tau}$. If $\nu = 1/\tau$, we have: 
-  
-  \begin{equation}
-  \left<\Delta x^2\right>=\int_{0}^{t}ds_1\int_{0}^{s_1} \, ds_2\, e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}e^{-(s_1-s_2)\nu},
-  \end{equation}
-  After the integration the MSD is:
-  
-  \begin{equation}
-  \label{MSD}
-  \left<\Delta x^2\right>=\frac{2A}{(\gamma+\nu)}\left[\frac{1}{2\gamma}(1-e^{-2\gamma t})-\frac{1}{\gamma-\nu}(e^{-(\gamma+\nu)t}-e^{-2\gamma t})\right],
-  \end{equation}
-  Expanding the equation to study the limits cases.
-  \begin{equation}
-  =\frac{A}{\gamma(\gamma+\nu)}-\frac{Ae^{-2\gamma t}}{\gamma(\gamma+\nu)}+\frac{2Ae^{-2\gamma t}}{(\gamma-\nu)(\gamma+\nu)}-\frac{2Ae^{-(\gamma+\nu) t}}{(\gamma-\nu)(\gamma+\nu)}
-  \end{equation}
-  Now we can study the limits cases as:
-   For short's times $t \to 0$:
-  \begin{equation}
-  \label{tcortos}
-  \left<\Delta x^2\right>\approx A t^2.
-  \end{equation}
-  For $t \to \infty$:
-  \begin{equation}
-  \label{tlargos}
-  \left<\Delta x^2\right>\approx \frac{A}{\gamma(\nu+\gamma)}.
-  \end{equation}
-  %Para tiempos intermedios, es decir $\gamma \ll \nu$, tal que, $\gamma t \ll 1$ y $\nu t \gg 1$, pasan dos cosas: $e^{-\nu t}\to 0$ y $e^{-\gamma t } \to 1-\gamma t$, tenemos que:
-  %\begin{equation}
-  %\left<\Delta x^2\right>\approx \frac{t}{\nu}\left(\frac{A\gamma}{\nu}+\frac{1}{2}\right)-\frac{2A}{\nu^2}.
-  %\end{equation}
-  We can see that for short times the MSD have a ballistic behavior and for long times the MSD saturates. We will compute the velocity autocorrelation  $C(t,t') = \left< v(t)v(t')\right>$ using the equation \ref{langevin} with a initial condition in the infinity. The solution of the equation with this initial condition is:
-   
-  \begin{equation}
-  \label{solinfinity}
-  x(t)=\int_{-\infty}^{t}e^{-\gamma(t-s)u(s)}\, ds.
-  \end{equation}
-  The velocity autocorrelation function is: 
-  
-  \begin{equation}
-  C(t,t')= \left< v(t)v(t')\right>=\left<(u(t)-\gamma x(t))(u(t')-\gamma x(t'))\right>,
-  \end{equation}
-  
-  \begin{equation}
-  C(t,t') = \left<u(t)u(t')\right>- \gamma \left<u(t)x(t')\right>- \gamma \left<x(t)u(t')\right>+\gamma^2  \left<x(t)x(t')\right>.
-  \end{equation}
-  
-  The first term is the noise autocorrelation $\left<u(t)u(t')\right> =A e^{-\gamma|t-t'|}$. To solve the integrals we will assume that $t>t'$.
-  
-  The integral $\left<x(t)u(t')\right>$:
-  \begin{align}
-  \left<x(t)u(t')\right> &= A\int_{-\infty}^{t}ds \  e^{-\gamma(t-s)}e^{-\nu|t'-s|}, \ \ \ t>t'\\
-  &=A\int_{-\infty}^{t'}ds \ e^{-\gamma(t-s)-\nu(t'-s)}+A\int_{t'}^{t}ds \ e^{-\gamma(t-s)-\nu(s-t')}, \\
-  &=\frac{Ae^{-\gamma(t-t')}}{\gamma+\nu}+\frac{Ae^{-\nu(t-t')}-Ae^{-\gamma(t-t')}}{\gamma-\nu}.
-  \end{align}
-  The second term integral is:
-  \begin{align}
-    \left<u(t)x(t')\right> &= \int_{-\infty}^{t'}ds \ e^{-\gamma(t'-s)}e^{-\nu(t-s)},\\
-    &=\frac{e^{-\nu(t-t')}}{\gamma+\nu}.
-  \end{align}
-  
-  And the last integral:
-  
-  \begin{align}
-    \left<x(t)x(t')\right> &= \int_{-\infty}^{t}ds \ \int_{-\infty}^{t'}ds' \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu|s-s'|},  \\
-    \end{align}
-    
-    where we will use the same procedure as before to change the limits of integration. We have first:
-    \begin{align}
-      C_{I} &= \int_{-\infty}^{t'}ds \ \int_{-\infty}^{t'} ds' \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu(s'-s)},\\
-      &=\int_{-\infty}^{t'}ds \ \int_{s}^{t'}ds' \ e^{(\gamma+\nu)s}e^{(\gamma-\nu)s'}e^{-\gamma t}e^{-\gamma t'},\\
-      &=\frac{1}{\gamma - \nu}\int_{-\infty}^{t'} ds \ \left[e^{(\gamma-\nu)t'}e^{(\gamma+\nu)s}-e^{2\gamma s}\right],\\
-      &=\frac{e^{-\gamma(t-t')}}{\gamma-\nu}\left(\frac{1}{\gamma+\nu}-\frac{1}{2\gamma}\right).
-    \end{align}
-    The next part of the integral is:
-    \begin{align}
-      C_{II} &= \int_{-\infty}^{t'}ds' \ \int_{s'}^{t} ds \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu(s-s')},\\
-      &=e^{-\gamma t-\gamma t'}\int_{-\infty}^{t'}ds'\ \int_{s'}^{t}ds\ e^{(\gamma-\nu)s}e^{(\gamma +\nu)s'},\\
-      &=\frac{e^{-\gamma t - \gamma t'}}{\gamma-\nu}\int_{-\infty}^{t'}ds'\ \left[e^{(\gamma-\nu)t}e^{(\gamma+\nu)s'}-e^{2\gamma s'}\right],\\
-      &=\frac{1}{(\gamma-\nu)(\gamma+\nu)}e^{-\nu(t-t')}-\frac{1}{2\gamma(\gamma-\nu)}e^{-\gamma(t-t')}.
-    \end{align}
-    Bringing together all the terms, the velocity autocorrelation function is:
-    
-  \begin{equation}
-  C(t,t')= \frac{A}{(\gamma+\nu)(\gamma-\nu)}\left[(\gamma^2 +\gamma \nu -\nu^2)e^{-\gamma(t-t')}-\gamma^2 e^{-\nu(t-t')}\right], \ \ t > t'
-  \end{equation}
+	\left<\Delta x^2\right>=\int_{0}^{t}ds_1\int_{0}^{s_1} \, ds_2\, e^{-\frac{1}{\tilde{\tau}}(t-s_1)}e^{-\frac{1}{\tilde{\tau}}(t-s_2)}e^{-(s_1-s_2)\frac{1}{\tau}},
+\end{equation}
+After the integration, the MSD is:
+
+\begin{equation}
+	\label{MSD}
+	\left<\Delta x^2\right>=\frac{2v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}\left[\frac{1}{2\frac{1}{\tilde{\tau}}}(1-e^{-2\frac{1}{\tilde{\tau}} t})-\frac{1}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}(e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-2\frac{1}{\tilde{\tau}} t})\right],
+\end{equation}
+Expanding the equation to study the limits cases.
+\begin{equation}
+	=\frac{v_b^2}{\frac{1}{\tilde{\tau}}(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}-\frac{v_b^2e^{-2\frac{1}{\tilde{\tau}} t}}{\frac{1}{\tilde{\tau}}(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}+\frac{2v_b^2e^{-2\frac{1}{\tilde{\tau}} t}}{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}-\frac{2v_b^2e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau}) t}}{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}
+\end{equation}
+Now we can study the limits cases as:
+For short's times $t \to 0$:
+\begin{equation}
+	\label{tcortos}
+	\left<\Delta x^2\right>\approx v_b^2 t^2.
+\end{equation}
+For $t \to \infty$:
+\begin{equation}
+	\label{tlargos}
+	\left<\Delta x^2\right>\approx \frac{v_b^2}{\frac{1}{\tilde{\tau}}(\frac{1}{\tau}+\frac{1}{\tilde{\tau}})}.
+\end{equation}
+We can see that for short times, the MSD has a ballistic behavior, and for long times the MSD saturates. We will compute the velocity autocorrelation  $C(t,t') = \left< v(t)v(t')\right>$ using the equation \ref{langevin} with an initial condition in the infinity. The solution of the equation with this initial condition is:
+
+\begin{equation}
+	\label{solinfinity}
+	x(t)=\int_{-\infty}^{t}e^{-\frac{1}{\tilde{\tau}}(t-s)}  u(s)\, ds.
+\end{equation}
+The velocity autocorrelation function is: 
+
+\begin{equation}
+	C(t,t')= \left< v(t)v(t')\right>=\left<(u(t)-\frac{1}{\tilde{\tau}} x(t))(u(t')-\frac{1}{\tilde{\tau}} x(t'))\right>,
+\end{equation}
+
+\begin{equation}
+	C(t,t') = \left<u(t)u(t')\right>- \frac{1}{\tilde{\tau}} \left<u(t)x(t')\right>- \frac{1}{\tilde{\tau}} \left<x(t)u(t')\right>+\frac{1}{\tilde{\tau}^2}  \left<x(t)x(t')\right>.
+\end{equation}
+
+The first term is the noise autocorrelation $\left<u(t)u(t')\right> =v_b^2 e^{-\frac{1}{\tilde{\tau}}|t-t'|}$. To solve the integrals, we will assume that $t>t'$.
+
+The integral $\left<x(t)u(t')\right>$:
+\begin{align}
+	\left<x(t)u(t')\right> &= v_b^2\int_{-\infty}^{t}ds \  e^{-\frac{1}{\tilde{\tau}}(t-s)}e^{-\frac{1}{\tau}|t'-s|}, \ \ \ t>t'\\
+	&=v_b^2\int_{-\infty}^{t'}ds \ e^{-\frac{1}{\tilde{\tau}}(t-s)-\frac{1}{\tau}(t'-s)}+v_b^2\int_{t'}^{t}ds \ e^{-\frac{1}{\tilde{\tau}}(t-s)-\frac{1}{\tau}(s-t')}, \\
+	&=\frac{v_b^2e^{-\frac{1}{\tilde{\tau}}(t-t')}}{\frac{1}{\tilde{\tau}}+\frac{1}{\tau}}+\frac{v_b^2e^{-\frac{1}{\tau}(t-t')}-v_b^2e^{-\frac{1}{\tilde{\tau}}(t-t')}}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}.
+\end{align}
+The second term integral is:
+\begin{align}
+	\left<u(t)x(t')\right> &= \int_{-\infty}^{t'}ds \ e^{-\frac{1}{\tilde{\tau}}(t'-s)}e^{-\frac{1}{\tau}(t-s)},\\
+	&=\frac{e^{-\frac{1}{\tau}(t-t')}}{\frac{1}{\tilde{\tau}}+\frac{1}{\tau}}.
+\end{align}
+
+And the last integral:
+
+\begin{align}
+	\left<x(t)x(t')\right> &= \int_{-\infty}^{t}ds \ \int_{-\infty}^{t'}ds' \ e^{-\frac{1}{\tilde{\tau}}(t-s)}e^{-\frac{1}{\tilde{\tau}}(t'-s')}e^{-\frac{1}{\tau}|s-s'|},  \\
+\end{align}
+
+Where we will use the same procedure as before to change the limits of integration. We have first:
+\begin{align}
+	C_{I} &= \int_{-\infty}^{t'}ds \ \int_{-\infty}^{t'} ds' \ e^{-\frac{1}{\tilde{\tau}}(t-s)}e^{-\frac{1}{\tilde{\tau}}(t'-s')}e^{-\frac{1}{\tau}(s'-s)},\\
+	&=\int_{-\infty}^{t'}ds \ \int_{s}^{t'}ds' \ e^{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})s}e^{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})s'}e^{-\frac{1}{\tilde{\tau}} t}e^{-\frac{1}{\tilde{\tau}} t'},\\
+	&=\frac{1}{\frac{1}{\tilde{\tau}} - \frac{1}{\tau}}\int_{-\infty}^{t'} ds \ \left[e^{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})t'}e^{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})s}-e^{2\frac{1}{\tilde{\tau}} s}\right],\\
+	&=\frac{e^{-\frac{1}{\tilde{\tau}}(t-t')}}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\left(\frac{1}{\frac{1}{\tilde{\tau}}+\frac{1}{\tau}}-\frac{1}{2\frac{1}{\tilde{\tau}}}\right).
+\end{align}
+The next part of the integral is:
+\begin{align}
+	C_{II} &= \int_{-\infty}^{t'}ds' \ \int_{s'}^{t} ds \ e^{-\frac{1}{\tilde{\tau}}(t-s)}e^{-\frac{1}{\tilde{\tau}}(t'-s')}e^{-\frac{1}{\tau}(s-s')},\\
+	&=e^{-\frac{1}{\tilde{\tau}} t-\frac{1}{\tilde{\tau}} t'}\int_{-\infty}^{t'}ds'\ \int_{s'}^{t}ds\ e^{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})s}e^{(\frac{1}{\tilde{\tau}} +\frac{1}{\tau})s'},\\
+	&=\frac{e^{-\frac{1}{\tilde{\tau}} t - \frac{1}{\tilde{\tau}} t'}}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\int_{-\infty}^{t'}ds'\ \left[e^{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})t}e^{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})s'}-e^{\frac{2}{\tilde{\tau}} s'}\right],\\
+	&=\frac{1}{(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}e^{-\frac{1}{\tau}(t-t')}-\frac{1}{\frac{2}{\tilde{\tau}}(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})}e^{-\frac{1}{\tilde{\tau}}(t-t')}.
+\end{align}
+Bringing together all the terms, the velocity autocorrelation function is:
+
+\begin{equation}
+	C(t,t')= \frac{v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})(\frac{1}{\tilde{\tau}}-\frac{1}{\tau})}\left[\left(\frac{1}{\tilde{\tau}^2} + \frac{\frac{1}{\tilde{\tau}}}{\tau} -\frac{1}{\tau^2}\right)e^{-\frac{1}{\tilde{\tau}}(t-t')}-\frac{1}{\tilde{\tau}^2} e^{-\frac{1}{\tau}(t-t')}\right], \ \ t > t'
+\end{equation}
+For $t=t'$
+
+\begin{equation}
+	C(t,t)= \langle v^2 \rangle = \frac{v_b^2}{\frac{1}{\tilde{\tau}} \tau+1}=\frac{v_b^2\tilde{\tau}}{\tau+\tilde{\tau}}, \ \ 
+\end{equation}
+
 
 
 
