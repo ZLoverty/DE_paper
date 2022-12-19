@@ -540,11 +540,150 @@ We compared the MSD of both trajectories, as shown in Fig.~\ref{fig:hc-correctio
 At short times, the corrected MSD is generally smaller, while at long times, the two MSD are indistinguishable. 
 This difference is expected: HT does not detect droplet location accurately. 
 At each step, it adds uncertainty to the detected location, making the short time displacement artificially larger.
-At long times, however, this artificial displacement becomes less important compared to the actual dispalcement, so that the two MSD converge.
+At long times, however, this artificial displacement becomes less important compared to the actual displacement, so that the two MSD converge.
 Interestingly, both MSD exhibit subdiffusive regimes at short times, suggesting that even the corrected trajectory is subject to detection noise.
 It is challenging to eliminate detection noise by further correction of the trajectories.
 Therefore, we acknowledge the presence of this noise and incorporate it in our model to fit experimental MSD.
 The results are satisfactory.  
+
+\section{Image analysis}
+\label{img.analisis}
+Videos are shot between 30-70 fps, with the majority shot at 50 fps for 10 minutes, therefore, to extract the position of the outer and inner droplet we have to analyze about 30000 images. 
+To do that, we made a tracking script in Matlab thats detect both droplets using a Matlab function  called \textit{imfindcircles}. This function finds circles of given radius range and with certain contrast. 
+So we can find dark circles or bright circles of given radii, more parameters can be added to the function, such as sensitivity. The steps to perform the detection of the droplets are summarized in the figure (\ref{Deteccion}). The steps to track the droplets  are: The initial image is cropped  to make detection less resource-intensive, the Matlab \textit{Drawcircle} function is used on this image  to compute the diameter and center of the outer and inner  droplet. From the center and radii of the inner droplet we make a template of the inner droplet with a size of  1.2 times the  inner radii. Now we perform some image adjustments to increase the contrast  and  make the detection easier.  Then using the function \texttt{imfindcircles} for the inner droplet and the outer droplet. For the inner droplet we give to the function a parameter of the radios  $r_{i} \pm$\texttt{delta}, where \texttt{delta} is a constant times the radius detected in the image $k-1$.  We are detecting the inner droplet in the template image, in the step $k$ the template image is compared with the image in the step $k-1$ using the crosscorrelation function \texttt{corr2}.   This function gives a value between $[0-1]$, if this value is $1$ then the image is identical to the image  in the step before. We put the condition if this value is less than 0.5 then increase the value of  \texttt{delta} and so on. The function \texttt{imfindcircles} will detect in a ranges of radius, so in two consecutive image this value of radius can change and therefore change the center of the inner droplet in a small quantity. 
+
+\begin{figure}[b!]
+	\begin{center}
+		\includegraphics[width=\columnwidth]{proceso_deteccion.pdf}	
+\caption[Detection]{\small{\textbf{Tracking. -} From left to right: The initial image is cropped.  Then draw two circles to calculate the diameters of the drops. An inner droplet template is created with a size of 1.2 times the radii of the inner droplet. Then we detect the outer drop using \textit{imfindcircles} over the cropped image and the same over the template of the inner  droplet.   }}
+		\label{Deteccion}
+	\end{center}
+\end{figure}
+
+After detection, on the raw data the data can be smoothed to remove small fluctuations, but the question now arises, how much can we smooth so as not to remove information about the internal droplet motion?.
+
+\ section{Smoothdata analysis}
+\label{smoothdata}
+We want to study how data smoothing through affects the measured observables. The \textit{smoothdata} function is the function included in the Matlab toolbox, which, as shown in the figure \ref{Datos_videos} the unanalyzed position shows large variations that as the window size increases for the smoothdata function decrease. The smoothdata function returns a moving average of the elements of the position vector determined by one. In the data we have used the \text{Gaussian} method which weights the window with a Gaussian weight.
+The \textit{smoothn} function provides a discrete, robust, unsupervised and fast smoothing method for arbitrary-dimensional data of arbitrary dimension.
+
+The videos will show the result of the detection of the internal droplet, the difference of the position between two positions $\Delta X = X_{n+1}-X_{n}$, the X and Y position in time where the time axis moves with the data and a cropping of the internal droplet in time where the image axes remain fixed according to the position of the center of the internal droplet in the initial image plus 1.1 times its radius. (see videos frame by frame)
+\begin{figure}[b].
+	\includegraphics[width=\columnwidth]{Figures/Datos_video.pdf}
+	\caption{Example analysis of a video, x-position and velocity autocorrelation function for different values of smoothdata and for smoothn function without any input and with robust method}.
+	\label{Datos_videos}
+\end{figure}
+
+\section{MSD computation}
+
+\begin{equation}
+  \label{langevin}
+  \dot{x}=u(t)-\gamma x,
+  \end{equation} 
+  We can solve this using the Laplace transform, then $x(t)$ is:
+  \begin{equation}
+  x(t)  = x_0 e^{-\gamma t}+\int_{0}^{t}e^{-\gamma(t-s)}u(s)\, ds,
+  \end{equation}
+  We will assuume that the noise autocorrelation are of the form $\left<u(t)u(t')\right>=Ae^{-|t-t'|/\tau}$, where A is the noise amplitude and $\tau$ is the persistence time. Also we will assume that the initial position is independent of the noise, $\left<x(0)u(t)\right>=0$. Having this we can compute the mean square displacement (MSD) as:
+  \begin{equation}
+  \left<\Delta x^2\right>=2e^{-\gamma t} \int_{0}^{t}ds\, e^{-\gamma(t-s)}\left<x(0)u(t)\right> +\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}u(s_1)u(s_2)
+  \end{equation}
+  \begin{equation}
+  \left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t} ds_1 \, ds_2 e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}u(s_1)u(s_2)\, ds_1 ds_2
+  \end{equation}
+  \begin{equation}
+  \left<\Delta x^2\right>=\int_{0}^{t}\int_{0}^{t}ds_1 \, ds_2\, e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}e^{-|s_1-s_2|/\tau},
+  \end{equation}
+  for the integration we will use :\\
+  \includegraphics[width=5cm]{Figuras/Integracion.png}\\
+  and the integral change as$\int_{0}^{t} ds_1 \int_{0}^{t} = 2 \int_{0}^{t}ds_1 {\int_{0}^{s_1}}  ds_2$, with  $s_1>s_2$ and then $e^{-|s_1-s_2|/\tau}=e^{-(s_1-s_2)/\tau}$. If $\nu = 1/\tau$, we have: 
+  
+  \begin{equation}
+  \left<\Delta x^2\right>=\int_{0}^{t}ds_1\int_{0}^{s_1} \, ds_2\, e^{-\gamma(t-s_1)}e^{-\gamma(t-s_2)}e^{-(s_1-s_2)\nu},
+  \end{equation}
+  After the integration the MSD is:
+  
+  \begin{equation}
+  \label{MSD}
+  \left<\Delta x^2\right>=\frac{2A}{(\gamma+\nu)}\left[\frac{1}{2\gamma}(1-e^{-2\gamma t})-\frac{1}{\gamma-\nu}(e^{-(\gamma+\nu)t}-e^{-2\gamma t})\right],
+  \end{equation}
+  Expanding the equation to study the limits cases.
+  \begin{equation}
+  =\frac{A}{\gamma(\gamma+\nu)}-\frac{Ae^{-2\gamma t}}{\gamma(\gamma+\nu)}+\frac{2Ae^{-2\gamma t}}{(\gamma-\nu)(\gamma+\nu)}-\frac{2Ae^{-(\gamma+\nu) t}}{(\gamma-\nu)(\gamma+\nu)}
+  \end{equation}
+  Now we can study the limits cases as:
+   For short's times $t \to 0$:
+  \begin{equation}
+  \label{tcortos}
+  \left<\Delta x^2\right>\approx A t^2.
+  \end{equation}
+  For $t \to \infty$:
+  \begin{equation}
+  \label{tlargos}
+  \left<\Delta x^2\right>\approx \frac{A}{\gamma(\nu+\gamma)}.
+  \end{equation}
+  %Para tiempos intermedios, es decir $\gamma \ll \nu$, tal que, $\gamma t \ll 1$ y $\nu t \gg 1$, pasan dos cosas: $e^{-\nu t}\to 0$ y $e^{-\gamma t } \to 1-\gamma t$, tenemos que:
+  %\begin{equation}
+  %\left<\Delta x^2\right>\approx \frac{t}{\nu}\left(\frac{A\gamma}{\nu}+\frac{1}{2}\right)-\frac{2A}{\nu^2}.
+  %\end{equation}
+  We can see that for short times the MSD have a ballistic behavior and for long times the MSD saturates. We will compute the velocity autocorrelation  $C(t,t') = \left< v(t)v(t')\right>$ using the equation \ref{langevin} with a initial condition in the infinity. The solution of the equation with this initial condition is:
+   
+  \begin{equation}
+  \label{solinfinity}
+  x(t)=\int_{-\infty}^{t}e^{-\gamma(t-s)u(s)}\, ds.
+  \end{equation}
+  The velocity autocorrelation function is: 
+  
+  \begin{equation}
+  C(t,t')= \left< v(t)v(t')\right>=\left<(u(t)-\gamma x(t))(u(t')-\gamma x(t'))\right>,
+  \end{equation}
+  
+  \begin{equation}
+  C(t,t') = \left<u(t)u(t')\right>- \gamma \left<u(t)x(t')\right>- \gamma \left<x(t)u(t')\right>+\gamma^2  \left<x(t)x(t')\right>.
+  \end{equation}
+  
+  The first term is the noise autocorrelation $\left<u(t)u(t')\right> =A e^{-\gamma|t-t'|}$. To solve the integrals we will assume that $t>t'$.
+  
+  The integral $\left<x(t)u(t')\right>$:
+  \begin{align}
+  \left<x(t)u(t')\right> &= A\int_{-\infty}^{t}ds \  e^{-\gamma(t-s)}e^{-\nu|t'-s|}, \ \ \ t>t'\\
+  &=A\int_{-\infty}^{t'}ds \ e^{-\gamma(t-s)-\nu(t'-s)}+A\int_{t'}^{t}ds \ e^{-\gamma(t-s)-\nu(s-t')}, \\
+  &=\frac{Ae^{-\gamma(t-t')}}{\gamma+\nu}+\frac{Ae^{-\nu(t-t')}-Ae^{-\gamma(t-t')}}{\gamma-\nu}.
+  \end{align}
+  The second term integral is:
+  \begin{align}
+    \left<u(t)x(t')\right> &= \int_{-\infty}^{t'}ds \ e^{-\gamma(t'-s)}e^{-\nu(t-s)},\\
+    &=\frac{e^{-\nu(t-t')}}{\gamma+\nu}.
+  \end{align}
+  
+  And the last integral:
+  
+  \begin{align}
+    \left<x(t)x(t')\right> &= \int_{-\infty}^{t}ds \ \int_{-\infty}^{t'}ds' \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu|s-s'|},  \\
+    \end{align}
+    
+    where we will use the same procedure as before to change the limits of integration. We have first:
+    \begin{align}
+      C_{I} &= \int_{-\infty}^{t'}ds \ \int_{-\infty}^{t'} ds' \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu(s'-s)},\\
+      &=\int_{-\infty}^{t'}ds \ \int_{s}^{t'}ds' \ e^{(\gamma+\nu)s}e^{(\gamma-\nu)s'}e^{-\gamma t}e^{-\gamma t'},\\
+      &=\frac{1}{\gamma - \nu}\int_{-\infty}^{t'} ds \ \left[e^{(\gamma-\nu)t'}e^{(\gamma+\nu)s}-e^{2\gamma s}\right],\\
+      &=\frac{e^{-\gamma(t-t')}}{\gamma-\nu}\left(\frac{1}{\gamma+\nu}-\frac{1}{2\gamma}\right).
+    \end{align}
+    The next part of the integral is:
+    \begin{align}
+      C_{II} &= \int_{-\infty}^{t'}ds' \ \int_{s'}^{t} ds \ e^{-\gamma(t-s)}e^{-\gamma(t'-s')}e^{-\nu(s-s')},\\
+      &=e^{-\gamma t-\gamma t'}\int_{-\infty}^{t'}ds'\ \int_{s'}^{t}ds\ e^{(\gamma-\nu)s}e^{(\gamma +\nu)s'},\\
+      &=\frac{e^{-\gamma t - \gamma t'}}{\gamma-\nu}\int_{-\infty}^{t'}ds'\ \left[e^{(\gamma-\nu)t}e^{(\gamma+\nu)s'}-e^{2\gamma s'}\right],\\
+      &=\frac{1}{(\gamma-\nu)(\gamma+\nu)}e^{-\nu(t-t')}-\frac{1}{2\gamma(\gamma-\nu)}e^{-\gamma(t-t')}.
+    \end{align}
+    Bringing together all the terms, the velocity autocorrelation function is:
+    
+  \begin{equation}
+  C(t,t')= \frac{A}{(\gamma+\nu)(\gamma-\nu)}\left[(\gamma^2 +\gamma \nu -\nu^2)e^{-\gamma(t-t')}-\gamma^2 e^{-\nu(t-t')}\right], \ \ t > t'
+  \end{equation}
+
+
+
 
 
 
