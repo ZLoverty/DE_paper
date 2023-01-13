@@ -198,7 +198,7 @@ Particle image velocimetry (PIV) was performed using OpenPIV package in Python \
 
 
 \section{Results}
-
+% I'm not sure if I have to have a dedicated section to discuss the results.
 \subsection{Inner droplet trajectories}
 
 In the double emulsion experimental system, the inner droplet is frequently ``kicked'' by the many swimming bacteria around it.
@@ -214,7 +214,7 @@ The propelling force of a single bacteria is approximated by the Stokes drag on 
 Let $F_b=F_a$, we get a critical droplet radius $r_c \approx 2.7$ $\mu$m.
 Indeed, since we never prepared inner droplet with radius $r_i < r_c$, inner droplet leaving the surface is a rare event.
 However, in very concentrated bacterial suspensions, the inner droplet can leave the surface even when $r_i > r_c$.
-This is likely due to more frequent collision event, or collective motions.
+This is likely due to more frequent collision events, or collective motions.
 
 \begin{figure*}[!t]
   \includegraphics[width=\textwidth]{2-traj-analysis}
@@ -332,6 +332,53 @@ For bacterial systems, this is particularly challenging, due to the fact that ba
 Our experiment typically produce 10-minute videos of active double emulsions. 
 A typical bacterial sample used in our experiment, however, can only last around an hour, before the activity decay becomes apparent. 
 Therefore, it is necessary to verify the steady state of experiment. 
+
+Water-in-oil emulsion has been used to confine bacteria in many previous experimental works \cite{Hamby2018, Lushi2014, Rajabi2021, Ramos2020, Vincenti2019, Wioland2013}. 
+Most of them emphasize that the videos are taken within a very short time after sample preparation, and the activity is in steady state. 
+The claimed sample lifetimes are summarized in Table~\ref{tab:sample-lifetime}. Being emphasized many times, steady state and sample lifetime are clearly very crucial to bacterial droplet experiments. 
+Yet, further investigation on what determines the sample lifetime is quite rare, especially in droplet. 
+There are two reasons: (i) previous experiment does not require very long imaging; (ii) sample lifetime can be affected by many factors, and is therefore difficult to narrow down the scope.
+
+\begin{table}
+  \caption{\label{tab:sample-lifetime}Sample lifetime in previous experiments.}
+  \begin{ruledtabular}
+  \begin{tabular}{lll}
+  Bacteria & Video time & Reference \\
+  \textit{B. subtilis} & > 10 min & \cite{Wioland2013} \\
+  \ecoli & 3 min & \cite{Hamby2018} \\
+  \textit{M. gryphiswaldense} & 30 min & \cite{Vincenti2019} \\
+  \ecoli & 30 min & \cite{Rajabi2021} \\
+  \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+In this work, we perform Particle Image Velocimetry (PIV) to quantify the bacterial activity in droplets of various sizes. 
+In Fig.~\ref{fig:lifetime}(a), we show how mean velocity evolves over time, up to 50 minutes. 
+Generally, the curves starts with a steady state, followed by a rapid decay.
+When droplets are small ($r_o<25$ $\mu$m), it is difficult to identify a steady state and we always observe activity decay from the very beginning of experiments.
+As a result, the lifetime of bacterial droplets, which is defined as the time it takes for the mean velocity to decay to half of the initial value, depends on droplet size. 
+In Fig.~\ref{fig:lifetime}(b), we plot droplet lifetime as a function of droplet size. 
+We observe that droplet lifetime generally increases with droplet size, and the time scale is on the order of 10 minutes, in agreement with previous works. 
+It is well known that blue light generates unfavorable substances that hinders bacterial motility \cite{bergColiMotion2004}.
+Therefore, we also briefly explore the effect of blue light exposure. 
+Normally, the samples are subject to continuous light exposure, and the corresponding lifetime data are plotted in black markers in Fig.~\ref{fig:lifetime}(b).
+To test the light effect, two samples are only exposed to light intermittently, and the corresponding lifetime data are plotted in red markers in Fig.~\ref{fig:lifetime}(b).
+The data suggest that less exposure to blue light leads to a considerable increase of droplet lifetime.
+Droplet size and blue light exposure might work in a convoluted way, which is not clear so far.
+
+\begin{figure}[!t]
+  \includegraphics[width=\columnwidth]{droplet-lifetime}
+  \caption{
+  (a) Mean PIV velocity $\overline V$ as a measure of bacterial activity, plotted against time after loading the samples to sealed observation chambers.
+  (b) Droplet lifetime, defined as the time it takes for the mean velocity to decay to half of the initial value, as a function of droplet diameter. 
+  The effect of light exposure is briefly explored. 
+  Continuous exposure data - the default light condition - are plotted in black markers.
+  Intermittent exposure data, where the light is only on for 10/120 seconds, are plotted in red markers.
+  }
+  \label{fig:lifetime}
+\end{figure}
+
+  
 
 \subsection{Numerical simulation}
 % Idea is to align some simulation results with experimental results.
@@ -523,18 +570,19 @@ So we can find dark circles or bright circles of given radii, more parameters ca
 
 After detection, on the raw data the data can be smoothed to remove small fluctuations, but the question now arises, how much can we smooth so as not to remove information about the internal droplet motion?.
 
-\ section{Smoothdata analysis}
+\section{Smoothdata analysis}
 \label{smoothdata}
 We want to study how data smoothing through affects the measured observables. The \textit{smoothdata} function is the function included in the Matlab toolbox, which, as shown in the figure \ref{Datos_videos} the unanalyzed position shows large variations that as the window size increases for the smoothdata function decrease. The smoothdata function returns a moving average of the elements of the position vector determined by one. In the data we have used the \text{Gaussian} method which weights the window with a Gaussian weight.
 The \textit{smoothn} function provides a discrete, robust, unsupervised and fast smoothing method for arbitrary-dimensional data of arbitrary dimension.
 
 The videos will show the result of the detection of the internal droplet, the difference of the position between two positions $\Delta X = X_{n+1}-X_{n}$, the X and Y position in time where the time axis moves with the data and a cropping of the internal droplet in time where the image axes remain fixed according to the position of the center of the internal droplet in the initial image plus 1.1 times its radius. (see videos frame by frame)
-\begin{figure}[b].
+\begin{figure}[b]
 	\includegraphics[width=\columnwidth]{Figures/Datos_video.pdf}
-	\caption{Example analysis of a video, x-position and velocity autocorrelation function for different values of smoothdata and for smoothn function without any input and with robust method}.
+	\caption{Example analysis of a video, x-position and velocity autocorrelation function for different values of smoothdata and for smoothn function without any input and with robust method.}
 	\label{Datos_videos}
 \end{figure}
-\newpage
+
+
 \onecolumngrid
 \section{MSD computation}
 \begin{equation}
