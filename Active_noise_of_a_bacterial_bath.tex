@@ -196,61 +196,6 @@ Droplet tracking was done with a method based on Hough Transform (HT), a common 
 The results were refined by a custom Python code, which will be discussed in the appendix.
 Particle image velocimetry (PIV) was performed using OpenPIV package in Python \cite{OpenPIV}, for characterizing bacterial activity in droplets.
 
-\section{1D model}
-% I rewrite the 1D model part based on the overleaf version to serve as a reference for the discussions of the results.
-
-To model the experiment, we consider the inner droplet as a passive particle agitated by an active noise.
-The outer droplet imposes confinement on the inner droplet.
-For a small displacement from the equilibrium point, the effect of the curved surface can be approximated by a harmonic potential.
-The equation of motion for the inner droplet in the Low Reynolds number limit is the overdamped Langevin equation:
-%
-\begin{align}
-    \label{eq.Langevin}
-    \dot{x}=u(t)-\frac{x}{\tilde{\tau}}.
-\end{align}
-%
-where $\tilde{\tau}=\Gamma/k$, with $\Gamma$ the friction coefficient, $k$ the spring constant for the harmonic potential, and $u(t)$ is the active noise induced by the bacterial suspension.
-We will model the active noise as a colored Gaussian noise, with the following statistical properties:
-%
-\begin{align}
-    \label{eq.act.noise}
-    \langle u(t)\rangle &=0,\\
-    \langle u(t)u(t')\rangle &=\frac{\tilde{D}}{\tau}e^{-|t-t'|/\tau}.
-\end{align}
-%
-where $\tilde{D}$ is the active diffusion coefficient, and $\tau$ is the persistence time of the bacterial fluxes. The solution of the eq(\ref{eq.Langevin}) is given by:
-%
-\begin{align}
-    \label{sol:langevin}
-    x(t) = x_oe^{-t/\tilde{\tau}}+\int_{0}^{\infty}ds e^{-|t-s|/\tilde{\tau}}u(s).
-\end{align}
-
-We can derive the mean-square displacement (MSD):
-%
-\begin{align}
-    \label{eq.MSD_1d}
-    \langle \Delta x^2(t)\rangle = \frac{2(\tilde{D}/\tau)}{\frac{1}{\tilde{\tau}}+\frac{1}{\tau}}\left(\frac{1-e^{-\frac{2t}{\tilde{\tau}}}}{\frac{2}{\tilde{\tau}}}-\frac{e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2t}{\tilde{\tau}}}}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right),
-\end{align}
-%
-with the short and long time limits given by:
-%
-\begin{align}
-    \label{eq.limits}
-    \lim_{t\to0} \langle \Delta x^2(t)\rangle & = \frac{\tilde{D}}{\tau}t^2,\\
-    \lim_{t\to\infty} \langle \Delta x^2(t)\rangle & =\frac{\tilde{D}(\tau^*)^2}{\tilde{\tau}+\tau}.
-\end{align}
-%
-We can see that the MSD is ballistic at short times and saturates to a constant value at long times due to the confinement imposed by the harmonic potential. In Fig.~\ref{fig:msd-1d-model} we show two plots of the Eq.~\ref{eq.MSD_1d} for different values of $\tilde{\tau}$ while keeping $\tau$ fixed, and different $\tau$ while keeping $\tilde{\tau}$ fixed.
-
-\begin{figure}
-  \includegraphics[width=\columnwidth]{model-msd-illustration}
-  \caption{
-  \textbf{MSD 1D model.}
-  (a) Different values of $\tilde{\tau}$, where $\tau=0.5$ and $D=5$.
-  (b) Different values of $\tau$, where $\tilde{\tau}=200$ and $D=5$.
-  }
-  \label{fig:msd-1d-model}
-\end{figure}
 
 \section{Results}
 
@@ -392,27 +337,20 @@ Therefore, it is necessary to verify the steady state of experiment.
 % Idea is to align some simulation results with experimental results.
 % The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
 % If there are new results from simulation, we can get together to discuss what to include in this section.
-\subsection*{Model and Langevin equation}
 % Here I will write the details of the model, and then summarize that in the main text.
-\begin{figure}[!t]
-  \includegraphics[width=\columnwidth]{DEScheme.png}
-  \caption{
-  Mean PIV velocity $\overline V$ as a measure of bacterial activity, plotted against outer droplet radius $r_o$.
-  }
-  \label{fig:DE_scheme}
-\end{figure}
- To describe the motion of a particle of density $\rho_i$, radii $r_i$ immersed in a bacterial bath with viscosity $\eta$ and density $\rho_0$ which is confined in a spherical domain of radii $r_o$ and density $\rho_0$, as we shown in the figure (\ref{fig:DE_scheme}).
+ To describe the motion of a particle of density $\rho_i$, radii $r_i$ immersed in a bacterial bath with viscosity $\eta$ and density $\rho_0$ which is confined in a spherical domain of radii $r_o$ and density $\rho_0$.
  We propose a Langevin equation with an active noise produced by the bacterial bath and reflective boundary condition. 
  This noise is modeled as an colored noise with zero mean.
  The boundary condition for the particle can be written as follow: $x^2+y^2+z^2\leq (r_o-r_i)^2$, which mean that in any time $t$ the particle is inside the sphere.  
 The equation of motion in the limit of low Reynolds number is the following:
 \begin{align}
   \label{eq.Langevin_num}
-  \mathbf{\dot{r}}=\mathbf{u}(t)-\tilde{v}\mathbf{\hat{z}}.
+  \mathbf{\dot{r}}=\mathbf{u}(t)-v_s\mathbf{\hat{z}}.
 \end{align}
-where  $\tilde{v}=2\pi r_i^2 \delta\rho/9\eta$ is the sedimentation velocity of the particle.
-It can be shown that a Colored noise is produced by a random motion with white noise, eg, an Uhlenbeck-Ornstein process:
+where  $v_s=2 r_i^2 \Delta\rho g/9\eta$ is the sedimentation velocity of the particle.
+It can be shown that a Colored noise  is produced by a random motion with white noise, eg, an Uhlenbeck-Ornstein process:
 \begin{align}
+    \label{OUP}
   \dot{u}&=-\frac{u}{\tau}+\frac{\xi(t)}{\tau}\\
 \end{align}
 Where $\xi(t)$ is a white noise with zero mean and variance delta:
@@ -420,79 +358,102 @@ Where $\xi(t)$ is a white noise with zero mean and variance delta:
   \langle \xi(t)\rangle &=0,\\
   \langle \xi(t)\xi(t')\rangle &=2v^2\tau\delta(t-t').
 \end{align}
-Using Laplace transform, the solution for $t>0$ is:
+The second moment of the velocity is:
 \begin{align}
-  u(t)=u_0e^{-t/\tau}+\int_0^{t} \dd s \ e^{-(t-t')/\tau}\xi(s).
-\end{align}
- The second moment is:
-\begin{align}
-  \langle u(t)u(t')\rangle &=v^2e^{-|t-t'|/\tau}. 
+  \langle u(t)u(t')\rangle &=v_b^2e^{-|t-t'|/\tau}. 
 \end{align}
 Which is the velocity autocorrelation function of this velocity field.
-To solve this system numerically, we used the Euler-Maruyama method for stochastic differencial equations.
+To solve this system numerically, we used the Euler-Maruyama method for stochastic differential equations.
 As we mention before, we can produce an exponentially time correlated noise from a Ornstein-Uhlenbeck process.
 Using Euler, we solve for the position of the particle and the noise for the time step $n$.
 \begin{align}
    \label{eq:Euler_method}
    x_n&=x_{n-1}+u_{x_{n-1}}\dd t,\\
    y_n&=y_{n-1}+u_{y_{n-1}}\dd t,\\
-   z_n&=z_{n-1}+u_{z_{n-1}-\tilde{v}}\dd t,\\
-   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}\Delta t+v\sqrt{\frac{2\Delta t}{\tau}}N^i_{n}
+   z_n&=z_{n-1}+(u_{z_{n-1}}-v_s)\dd t,\\
+   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}dt+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n}
 \end{align}
-Where $N^{i}_n$ is a random number with zero mean and variance one. For the spherical confinement we use a reflective boundary condition. 
-That is, at each time step the algorithm compute the norm of the position of the particle and checks whether the particle has moved outside the sphere. 
-When the particle is outside the sphere a tangent plane is computed in the surface of the sphere in the position where crossed the surface, and then the particle is reflected respect to the tangent plane. 
-\begin{figure}[!h]
-  \includegraphics[width=5cm]{ReflectiveBoundary.png}
-  \caption{
-  Reflective boundary condition.
-  }
-  \label{fig:reflective_boundary}
+Where $N^{i}_n$ is a random number with zero mean and variance one.
+\subsection{One dimensional model}
+The confinement can be approximated to an harmonic potential, which allows us to write a one dimensional equation for the particle moving on the surface of the potential, and this can be solved analytically. 
+
+\begin{align}
+    \label{eq.Langevin}
+    \dot{x}=u(t)-\frac{x}{\tilde{\tau}}.
+\end{align}
+%
+where $\tilde{\tau}=\Gamma/k$, with $\Gamma$ the friction coefficient, $k$ the spring constant for the harmonic potential, and $u(t)$ is the active noise induced by the bacterial suspension.
+We will model the active noise as a colored Gaussian noise, with the following statistical properties:
+%
+\begin{align}
+    \label{eq.act.noise}
+    \langle u(t)\rangle &=0,\\
+    \langle u(t)u(t')\rangle &=v_b^2e^{-|t-t'|/\tau}.
+\end{align}
+%
+where $v_b^2$ is the intensity of the active noise, and $\tau$ is the persistence time of the bacterial fluxes. 
+We can derive the mean-square displacement (MSD).
+\begin{equation}
+	\label{MSD}
+	\left<\Delta x^2\right>=\frac{2v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{2}{\tilde{\tau}}}-\frac{(e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right],
+\end{equation}
+Now we can study the limits cases as:
+For short's times $t \to 0$:
+\begin{equation}
+	\label{tcortos}
+	\left<\Delta x^2\right>\approx v_b^2 t^2.
+\end{equation}
+For $t \to \infty$:
+\begin{equation}
+	\label{tlargos}
+	\left<\Delta x^2\right>\approx \frac{v_b^2}{\frac{1}{\tilde{\tau}}(\frac{1}{\tau}+\frac{1}{\tilde{\tau}})}.
+\end{equation}
+We can see that for short times, the MSD has a ballistic behavior, and for long times the MSD saturates.
+\section{Simulation Results}
+
+Simulation depends on four different variables $r_o,r_i,v_b^2,\tau$. 
+The idea here is to check under which condition the input parameters of the bath $v_b, \tau$, remain the same when we extract this values from the model. Equation \ref*{MSD} explicitly show $v_b^2$ and $\tau$, but this is for the case of a point particle in the presence of the bath. So lets re-writte the equation to:
+
+\begin{equation}
+	\label{MSD_fit}
+	=\frac{2v_{\text{fit}}^2}{(\frac{1}{\tilde{\tau}_{\text{fit}}}+\frac{1}{\tau}_{\text{fit}})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}_{\text{fit}}} t})}{\frac{2}{\tilde{\tau}_{\text{fit}}}}-\frac{(e^{-(\frac{1}{\tilde{\tau_{\text{fit}}}}+\frac{1}{\tau_{\text{fit}}})t}-e^{-\frac{2t}{\tilde{\tau}_{\text{fit}}} })}{\frac{1}{\tilde{\tau_{\text{fit}}}}-\frac{1}{\tau}_{\text{fit}}}\right].
+\end{equation}
+
+To fit the MSD of the particle, I used the following procedure:
+\begin{itemize}
+\item From the Slope MSD: $\alpha(t) = \frac{d(\log(\langle \Delta x^2 (t)\rangle))}{d\log(t)}$ find the time when the slope is $\alpha = 1.7$. 
+\item Fit the MSD up to $t$ when $\alpha = 1.7$ with the MSD for an Active Brownian Particle (ABP). 
+
+$\left<\Delta x^2\right>= v_b^2\left[t-\tau(1-e^{-t/\tau})\right]$
+\item Here extract $v_{\text{fit}}$, $\tau_{\text{fit}}$.
+\item Then fit the whole MSD with $v_{\text{fit}}$, $\tau_{\text{fit}}$ fixed to determine $\tilde{\tau}_\text{fit}$
+\end{itemize}
+
+
+\subsection{Effect of Change $r_o$}
+Here as we kept $r_i$ constant, we are changing the confinement. While changing $r_o$ we also change the value of $\tilde{\tau}$. The input parameters are: $r_i = 10 \mu m, \tau =1 s, v_b =1 \mu m/s$. 
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=\columnwidth]{figures/MSD_ro.pdf}
+        \caption{}
+        \label{fig:MSD_different_ro}
 \end{figure}
-\label{Reflective.Boundary.condition}
-    \section{Algorithm reflective boundary condition}
-
-The reflective boundary condition for the spherical confinement is: if the particle is outside the sphere, that is, $z^2+y^2+x^2>r^2$ reflect that position inside the sphere. 
-To do that, after the compute the position of the inner droplet we impose the condition that the norm of the position is less than one, the radius of the outer droplet. 
-The procedure is the following:
-\begin{enumerate}
-    \item Determine if a point is outside of the sphere, that is \\ $||xyz|| = \sqrt{(x-x_0)^2+(y-y_0)^2+(z-z_0)^2} > 1$.
-    \item If there are no points outside of the sphere, then go back to step 1.
-    \item For each point outside the sphere, find the intersection of its path with the sphere. For this we consider the equation of the sphere with center in zero, $x^2+y^2+z^2=1$.
-    \item The vector will have a starting point $(x_0,y_0,z_0)$ and ending point $(x_1,y_1,z_1)$.
-    \item The points along the line through these three points will be given in parametric form by:
-    \begin{align}
-        x(t)&= (x_1-x_0)t+x_0,\\
-        y(t)&=(y_1-y_0)t+y_0,\\
-        z(t)&=(z_1-z_0)t+z_0.
-    \end{align}
-    where $t$ is a real number between $0<t<1$. Now if we substitute for $x,y,z$ in the equation of the sphere. The parametrized expression we get a quadratic equation for $t$.
-    \item After collecting terms we have:
-    \begin{align}
-        at^2+bt+c=0,
-    \end{align}
-    with 
-   \begin{align}
-       a&=(x_1-x_0)^2+(y_1-y_0)^2+(z_1-z_0)^2,\\
-       b&= 2(x_1-x_0)x_0+2(y_1-y_0)y_0+2(z_1-z_0)z_0,\\
-       c&= x_0^2+y_0^2+z_0^2.
-   \end{align} 
-   And the roots for $t$ may be found with the quadratic formula                              $t=\frac{-b \pm \sqrt{b^2-4ac}}{2a}=\frac{2c}{-b \pm \sqrt{b^2-4ac}}$. We will use the second form to avoid $a=0$.
-
-   \item Now we have to find the tangent plane of the sphere at the intersection point. For the case of the circle this is easy, because we can draw a line from the center of the circle to the intersection point on the circle. The negative  inverse of the slope of this line is the slope of the tangent line to the curve at the intersection point. Combining this with the intersection point we have a line. And then we can reflect the point that its outside across this tangent line. But for 3D the notion of slope its different so I used another approach to find the reflection point across the tangent plane. 
-   \item After find the intersection point with $xyz_{inter}= xyz_0 + (xyz_1-xyz_0)t=N(x_2,y_2,z_2)$, we keep the closest to the point outside the sphere. This new point $N(x_2,y_2,z_2)$ is the intersection point, and we have the point $P(x_1,y_1,z_1)$ which is outside the sphere.
-  \item Find the vector from the intersection point to the new point $\mathbf{v}=xyz-N$ and then find the reflection of the vector $\mathbf{a}$ with respect to the tangent line at the intersection point, that is, $xyz =xyz-\frac{2(N \cdot v)}{||N||^2}N$. 
-  
-  \item Now we have a particle that moves randomly confined in a sphere. 
+ \begin{figure}[h!]
+        \includegraphics[width=\columnwidth]{figures/ro_v2fit_t2fit.pdf}
+      \caption{}
+      \label{fig:v2_ro}
+  \end{figure}
 
 
-\end{enumerate}
 
-%\begin{equation}\label{eq:dual_algo}
- % \begin{aligned}
-  %  \langle u(t)u(t+s)\rangle &=\langle \int_{0}^{t}\dd s_1 \ \int_{0}^{t+s}\dd s_2 \ \rangle  
-  %\end{aligned}
-  %\end{equation}
+
+
+
+
+
+
+
 
 \section{Discussions}
 
