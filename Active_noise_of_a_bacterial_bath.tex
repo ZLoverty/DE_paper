@@ -441,7 +441,7 @@ We will model the active noise as a colored Gaussian noise, with the following s
 where $v_b^2$ is the intensity of the active noise, and $\tau$ is the persistence time of the bacterial fluxes. 
 We can derive the mean-square displacement (MSD).
 \begin{equation}
-	\label{MSD}
+	\label{MSD1d}
 	\left<\Delta x^2\right>=\frac{2v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{2}{\tilde{\tau}}}-\frac{(e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right],
 \end{equation}
 Now we can study the limits cases as:
@@ -482,7 +482,7 @@ Here as we kept $r_i$ constant, we are changing the confinement. While changing 
 
 \begin{figure}[h!]
         \centering
-        \includegraphics[width=\columnwidth]{figures/MSD_ro.pdf}
+        \includegraphics[width=\columnwidth]{figures/ro_t1fit_t2fit.pdf}
         \caption{}
         \label{fig:MSD_different_ro}
 \end{figure}
