@@ -60,7 +60,7 @@ twocolumn,
 \newcommand{\um}[0]{$\mu$m}
 
 \AtBeginDocument{\renewcommand*{\d}{\mathop{\kern0pt\mathrm{d}}\!{}}}
-\graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}
+\graphicspath{{figures/}} % set default figure path to figures/, if we store figure files in figures/, we only need to put file name in \includegraphics{filename.pdf}. For supported formats, e.g. pdf and jpg, we can omit the extensions. This enhances the readability of the source.
 
 % Some formatting guidelines
 % 1. Start a new line (\n) for each sentence. This is good for synctex (click pdf and find the line in tex), and also good for Git when comparing versions.
@@ -378,38 +378,47 @@ Droplet size and blue light exposure might work in a convoluted way, which is no
   \label{fig:lifetime}
 \end{figure}
 
-  
+% I want to improve the structure of the paper.
+% Currently, we have 
+% Introduction
+% Experiment
+% Results
+%   - numerical simulation (duplicate) 
+% Simulation results (duplicate)
+% Discussions
+% Appendix
+
+% The two simulation results look duplicate and I want to merge them
+% Tentatively, I remove section simulation results and put all the contents under Results/numerical simulation.
 
 \subsection{Numerical simulation}
 % Idea is to align some simulation results with experimental results.
 % The current simulation is good on its own, but lacks some alignment with experiment, for example the parameters.
 % If there are new results from simulation, we can get together to discuss what to include in this section.
 % Here I will write the details of the model, and then summarize that in the main text.
- To describe the motion of a particle of density $\rho_i$, radii $r_i$ immersed in a bacterial bath with viscosity $\eta$ and density $\rho_0$ which is confined in a spherical domain of radii $r_o$ and density $\rho_0$.
- We propose a Langevin equation with an active noise produced by the bacterial bath and reflective boundary condition. 
- This noise is modeled as an colored noise with zero mean.
- The boundary condition for the particle can be written as follow: $x^2+y^2+z^2\leq (r_o-r_i)^2$, which mean that in any time $t$ the particle is inside the sphere.  
-The equation of motion in the limit of low Reynolds number is the following:
-\begin{align}
-  \label{eq.Langevin_num}
-  \mathbf{\dot{r}}=\mathbf{u}(t)-v_s\mathbf{\hat{z}}.
+\textit{Methods - }To describe the motion of a particle of density $\rho_i$, radii $r_i$ immersed in a bacterial bath with viscosity $\eta$ and density $\rho_0$ which is confined in a spherical domain of radii $r_o$ and density $\rho_0$.
+We propose a Langevin equation with an active noise produced by the bacterial bath and reflective boundary condition. 
+This noise is modeled as an colored noise with zero mean.
+The boundary condition for the particle can be written as follow: $x^2+y^2+z^2\leq (r_o-r_i)^2$, which mean that in any time $t$ the particle is inside the sphere.  
+The equation of motion in the limit of low Reynolds number is 
+\begin{align}\label{eq.Langevin_num}
+  \mathbf{\dot{r}}=\mathbf{u}(t)-v_s\mathbf{\hat{z}},
 \end{align}
 where  $v_s=2 r_i^2 \Delta\rho g/9\eta$ is the sedimentation velocity of the particle.
-It can be shown that a Colored noise  is produced by a random motion with white noise, eg, an Uhlenbeck-Ornstein process:
-\begin{align}
-    \label{OUP}
-  \dot{u}&=-\frac{u}{\tau}+\frac{\xi(t)}{\tau}\\
+It can be shown that a colored noise is produced by a random motion with white noise, e.g. an Uhlenbeck-Ornstein process:
+\begin{align}\label{OUP}
+  \dot{u}&=-\frac{u}{\tau}+\frac{\xi(t)}{\tau},
 \end{align}
-Where $\xi(t)$ is a white noise with zero mean and variance delta:
+where $\xi(t)$ is a white noise with zero mean and variance delta:
 \begin{align}
   \langle \xi(t)\rangle &=0,\\
   \langle \xi(t)\xi(t')\rangle &=2v^2\tau\delta(t-t').
 \end{align}
 The second moment of the velocity is:
 \begin{align}
-  \langle u(t)u(t')\rangle &=v_b^2e^{-|t-t'|/\tau}. 
+  \langle u(t)u(t')\rangle &=v_b^2e^{-|t-t'|/\tau},
 \end{align}
-Which is the velocity autocorrelation function of this velocity field.
+which is the velocity autocorrelation function of this velocity field.
 To solve this system numerically, we used the Euler-Maruyama method for stochastic differential equations.
 As we mention before, we can produce an exponentially time correlated noise from a Ornstein-Uhlenbeck process.
 Using Euler, we solve for the position of the particle and the noise for the time step $n$.
@@ -418,11 +427,63 @@ Using Euler, we solve for the position of the particle and the noise for the tim
    x_n&=x_{n-1}+u_{x_{n-1}}\dd t,\\
    y_n&=y_{n-1}+u_{y_{n-1}}\dd t,\\
    z_n&=z_{n-1}+(u_{z_{n-1}}-v_s)\dd t,\\
-   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}dt+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n}
+   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}dt+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n},
 \end{align}
-Where $N^{i}_n$ is a random number with zero mean and variance one.
+where $N^{i}_n$ is a random number with zero mean and variance one.
+
+The simulation has four independent variables $r_o,r_i,v_b^2,\tau$. 
+The idea here is to check under which condition the input parameters of the bath $v_b, \tau$, remain the same when we extract this values from the model. Equation \ref*{MSD} explicitly show $v_b^2$ and $\tau$, but this is for the case of a point particle in the presence of the bath. So lets re-writte \textcolor{red}{Eq.XX} to:
+
+\begin{equation}
+	\label{MSD_fit}
+	=\frac{2v_{\text{fit}}^2}{(\frac{1}{\tilde{\tau}_{\text{fit}}}+\frac{1}{\tau}_{\text{fit}})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}_{\text{fit}}} t})}{\frac{2}{\tilde{\tau}_{\text{fit}}}}-\frac{(e^{-(\frac{1}{\tilde{\tau_{\text{fit}}}}+\frac{1}{\tau_{\text{fit}}})t}-e^{-\frac{2t}{\tilde{\tau}_{\text{fit}}} })}{\frac{1}{\tilde{\tau_{\text{fit}}}}-\frac{1}{\tau}_{\text{fit}}}\right].
+\end{equation}
+
+To fit the MSD of the particle, I used the following procedure:
+\begin{itemize}
+\item From the Slope MSD: $\alpha(t) = \frac{d(\log(\langle \Delta x^2 (t)\rangle))}{d\log(t)}$ find the time when the slope is $\alpha = 1.7$. 
+\item Fit the MSD up to $t$ when $\alpha = 1.7$ with the MSD for an Active Brownian Particle (ABP). \textcolor{red}{References for this fitting procedure and model?}
+
+$\left<\Delta x^2\right>= v_b^2\left[t-\tau(1-e^{-t/\tau})\right]$
+\item Here extract $v_{\text{fit}}$, $\tau_{\text{fit}}$.
+\item Then fit the whole MSD with $v_{\text{fit}}$, $\tau_{\text{fit}}$ fixed to determine $\tilde{\tau}_\text{fit}$
+\end{itemize}
+
+
+\textit{Results - }The results are summarized as follows.
+\begin{itemize}
+  \item As we vary $r_o$ and keep other variables constant at: $r_i = 10$ $\mu$m, $\tau =1$ s, $v_b =1$ $\mu$m/s, \textcolor{red}{complete with a full description of the results! Please refer to the relevant plots.}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\columnwidth]{ro_t1fit_t2fit}
+  \caption{}
+  \label{fig:MSD_different_ro}
+\end{figure}
+\begin{figure}[h!]
+  \includegraphics[width=\columnwidth]{ro_v2fit_t2fit}
+  \caption{}
+  \label{fig:v2_ro}
+\end{figure}
+
+
+
+\end{itemize}
+
+
+
+
+\section{Discussions}
+
+\textcolor{blue}{
+  In this section, we discuss the results. 
+  For the results we understand, we can provide more insight, e.g. by giving more detailed description and analysis of a model. 
+  For the results we do not understand yet, we discuss in the context of literature, and pose specific open questions for future research to follow up.
+}
+
 \subsection{One dimensional model}
-The confinement can be approximated to an harmonic potential, which allows us to write a one dimensional equation for the particle moving on the surface of the potential, and this can be solved analytically. 
+
+The confinement can be approximated to an harmonic potential, which allows us to write a one dimensional equation for the particle moving on the surface of the potential, and this can be solved analytically. \textcolor{red}{I think we need to refer to Maggi's paper and discuss why we use different notations.}
 
 \begin{align}
     \label{eq.Langevin}
@@ -439,76 +500,47 @@ We will model the active noise as a colored Gaussian noise, with the following s
 \end{align}
 %
 where $v_b^2$ is the intensity of the active noise, and $\tau$ is the persistence time of the bacterial fluxes. 
-We can derive the mean-square displacement (MSD).
+We can solve the equations for the MSD of the particle:
 \begin{equation}
 	\label{MSD1d}
-	\left<\Delta x^2\right>=\frac{2v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{2}{\tilde{\tau}}}-\frac{(e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right],
-\end{equation}
-Now we can study the limits cases as:
-For short's times $t \to 0$:
-\begin{equation}
-	\label{tcortos}
-	\left<\Delta x^2\right>\approx v_b^2 t^2.
-\end{equation}
-For $t \to \infty$:
-\begin{equation}
-	\label{tlargos}
-	\left<\Delta x^2\right>\approx \frac{v_b^2}{\frac{1}{\tilde{\tau}}(\frac{1}{\tau}+\frac{1}{\tilde{\tau}})}.
-\end{equation}
-We can see that for short times, the MSD has a ballistic behavior, and for long times the MSD saturates.
-\section{Simulation Results}
-
-Simulation depends on four different variables $r_o,r_i,v_b^2,\tau$. 
-The idea here is to check under which condition the input parameters of the bath $v_b, \tau$, remain the same when we extract this values from the model. Equation \ref*{MSD} explicitly show $v_b^2$ and $\tau$, but this is for the case of a point particle in the presence of the bath. So lets re-writte the equation to:
-
-\begin{equation}
-	\label{MSD_fit}
-	=\frac{2v_{\text{fit}}^2}{(\frac{1}{\tilde{\tau}_{\text{fit}}}+\frac{1}{\tau}_{\text{fit}})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}_{\text{fit}}} t})}{\frac{2}{\tilde{\tau}_{\text{fit}}}}-\frac{(e^{-(\frac{1}{\tilde{\tau_{\text{fit}}}}+\frac{1}{\tau_{\text{fit}}})t}-e^{-\frac{2t}{\tilde{\tau}_{\text{fit}}} })}{\frac{1}{\tilde{\tau_{\text{fit}}}}-\frac{1}{\tau}_{\text{fit}}}\right].
+	\left<\Delta x^2\right>=\frac{2v_b^2}{(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})}\left[\frac{(1-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{2}{\tilde{\tau}}}-\frac{(e^{-(\frac{1}{\tilde{\tau}}+\frac{1}{\tau})t}-e^{-\frac{2}{\tilde{\tau}} t})}{\frac{1}{\tilde{\tau}}-\frac{1}{\tau}}\right].
 \end{equation}
 
-To fit the MSD of the particle, I used the following procedure:
-\begin{itemize}
-\item From the Slope MSD: $\alpha(t) = \frac{d(\log(\langle \Delta x^2 (t)\rangle))}{d\log(t)}$ find the time when the slope is $\alpha = 1.7$. 
-\item Fit the MSD up to $t$ when $\alpha = 1.7$ with the MSD for an Active Brownian Particle (ABP). 
-
-$\left<\Delta x^2\right>= v_b^2\left[t-\tau(1-e^{-t/\tau})\right]$
-\item Here extract $v_{\text{fit}}$, $\tau_{\text{fit}}$.
-\item Then fit the whole MSD with $v_{\text{fit}}$, $\tau_{\text{fit}}$ fixed to determine $\tilde{\tau}_\text{fit}$
-\end{itemize}
-
-
-\subsection{Effect of Change $r_o$}
-Here as we kept $r_i$ constant, we are changing the confinement. While changing $r_o$ we also change the value of $\tilde{\tau}$. The input parameters are: $r_i = 10 \mu m, \tau =1 s, v_b =1 \mu m/s$. 
+The model predicts the geometry dependence of saturation time $\tilde\tau$ explicitly. 
+According to Stokes law, $\Gamma = 6\pi\eta r_i$, where $\eta$ is the viscosity of bacterial suspensions. 
+The effective spring constant arising from buoyancy and the curved confining wall $k \approx \Delta m g / (r_o - r_i)$, where $\Delta m$ is the buoyant mass of the oil droplet in bacterial suspensions, which can be computed as $\Delta m = \Delta \rho \frac{4}{3}\pi r_i^3$. 
+Taken together, $\tilde\tau$ can be expressed as:
+$$
+\tilde\tau = \frac{9\eta}{2\Delta\rho g}\frac{r_o-r_i}{r_i^2}.
+$$
+In Fig.~\ref{fig:confinement-effect}, we have shown $\tilde\tau$ as functions of $r_o$ and $r_i$. In the plots, it is observed that $\tilde\tau$ increases with $r_o$ and decreases with $r_i$, agreeing with the predicted trend. To validate the prediction of the model, we can plot $\tilde\tau$ as a function of $(r_o-r_i)/r_i^2$. As shown in Fig.~\ref{fig:sat-time}, the linear-like increasing trend between $\tilde\tau$ and $(r_o-r_i)/r_i^2$ is indeed observed.
 
 \begin{figure}[h!]
-        \centering
-        \includegraphics[width=\columnwidth]{figures/ro_t1fit_t2fit.pdf}
-        \caption{}
-        \label{fig:MSD_different_ro}
+  \centering
+  \includegraphics[width=\columnwidth]{saturation-time}
+  \caption{Saturation time $\tilde\tau$ as a function of geometrical factor $(r_o-r_i)/r_i^2$.}
+  \label{fig:sat-time}
 \end{figure}
- \begin{figure}[h!]
-        \includegraphics[width=\columnwidth]{figures/ro_v2fit_t2fit.pdf}
-      \caption{}
-      \label{fig:v2_ro}
-  \end{figure}
+
+\textcolor{blue}{Discuss the value of prefactor.}
+% Now we can study the limits cases as:
+% For short's times $t \to 0$:
+% \begin{equation}
+% 	\label{tcortos}
+% 	\left<\Delta x^2\right>\approx v_b^2 t^2.
+% \end{equation}
+% For $t \to \infty$:
+% \begin{equation}
+% 	\label{tlargos}
+% 	\left<\Delta x^2\right>\approx \frac{v_b^2}{\frac{1}{\tilde{\tau}}(\frac{1}{\tau}+\frac{1}{\tilde{\tau}})}.
+% \end{equation}
+% We can see that for short times, the MSD has a ballistic behavior, and for long times the MSD saturates.
 
 
 
 
 
 
-
-
-
-
-
-\section{Discussions}
-
-\textcolor{blue}{
-  In this section, we discuss the results. 
-  For the results we understand, we can provide more insight, e.g. by giving more detailed description and analysis of a model. 
-  For the results we do not understand yet, we discuss in the context of literature, and pose specific open questions for future research to follow up.
-}
 
 \appendix
 
@@ -561,23 +593,32 @@ To do that, we made a tracking script in Matlab thats detect both droplets using
 So we can find dark circles or bright circles of given radii, more parameters can be added to the function, such as sensitivity. The steps to perform the detection of the droplets are summarized in the figure (\ref{Deteccion}). The steps to track the droplets  are: The initial image is cropped  to make detection less resource-intensive, the Matlab \textit{Drawcircle} function is used on this image  to compute the diameter and center of the outer and inner  droplet. From the center and radii of the inner droplet we make a template of the inner droplet with a size of  1.2 times the  inner radii. Now we perform some image adjustments to increase the contrast  and  make the detection easier.  Then using the function \texttt{imfindcircles} for the inner droplet and the outer droplet. For the inner droplet we give to the function a parameter of the radios  $r_{i} \pm$\texttt{delta}, where \texttt{delta} is a constant times the radius detected in the image $k-1$.  We are detecting the inner droplet in the template image, in the step $k$ the template image is compared with the image in the step $k-1$ using the crosscorrelation function \texttt{corr2}.   This function gives a value between $[0-1]$, if this value is $1$ then the image is identical to the image  in the step before. We put the condition if this value is less than 0.5 then increase the value of  \texttt{delta} and so on. The function \texttt{imfindcircles} will detect in a ranges of radius, so in two consecutive image this value of radius can change and therefore change the center of the inner droplet in a small quantity. 
 
 \begin{figure}[b!]
-	\begin{center}
-		\includegraphics[width=\columnwidth]{proceso_deteccion.pdf}	
-\caption[Detection]{\small{\textbf{Tracking. -} From left to right: The initial image is cropped.  Then draw two circles to calculate the diameters of the drops. An inner droplet template is created with a size of 1.2 times the radii of the inner droplet. Then we detect the outer drop using \textit{imfindcircles} over the cropped image and the same over the template of the inner  droplet.   }}
+  \includegraphics[width=\columnwidth]{proceso_deteccion}	
+  \caption[Detection]{
+    \textbf{Tracking. -} 
+    From left to right: The initial image is cropped.  
+    Then draw two circles to calculate the diameters of the drops. 
+    An inner droplet template is created with a size of 1.2 times the radii of the inner droplet. 
+    Then we detect the outer drop using \textit{imfindcircles} over the cropped image and the same over the template of the inner droplet.   
+    }
 		\label{Deteccion}
-	\end{center}
 \end{figure}
 
 After detection, on the raw data the data can be smoothed to remove small fluctuations, but the question now arises, how much can we smooth so as not to remove information about the internal droplet motion?.
 
 \section{Smoothdata analysis}
 \label{smoothdata}
-We want to study how data smoothing through affects the measured observables. The \textit{smoothdata} function is the function included in the Matlab toolbox, which, as shown in the figure \ref{Datos_videos} the unanalyzed position shows large variations that as the window size increases for the smoothdata function decrease. The smoothdata function returns a moving average of the elements of the position vector determined by one. In the data we have used the \text{Gaussian} method which weights the window with a Gaussian weight.
+\textcolor{red}{Need revision, the language is unclear and may have grammar problems.}
+We want to study how data smoothing through affects the measured observables. 
+The \textit{smoothdata} function is the function included in the Matlab toolbox, which, as shown in the figure \ref{Datos_videos} the unanalyzed position shows large variations that as the window size increases for the smoothdata function decrease. 
+%
+The smoothdata function returns a moving average of the elements of the position vector determined by one. 
+In the data we have used the \text{Gaussian} method which weights the window with a Gaussian weight.
 The \textit{smoothn} function provides a discrete, robust, unsupervised and fast smoothing method for arbitrary-dimensional data of arbitrary dimension.
 
 The videos will show the result of the detection of the internal droplet, the difference of the position between two positions $\Delta X = X_{n+1}-X_{n}$, the X and Y position in time where the time axis moves with the data and a cropping of the internal droplet in time where the image axes remain fixed according to the position of the center of the internal droplet in the initial image plus 1.1 times its radius. (see videos frame by frame)
 \begin{figure}[b]
-	\includegraphics[width=\columnwidth]{Figures/Datos_video.pdf}
+	\includegraphics[width=\columnwidth]{Datos_video}
 	\caption{Example analysis of a video, x-position and velocity autocorrelation function for different values of smoothdata and for smoothn function without any input and with robust method.}
 	\label{Datos_videos}
 \end{figure}
