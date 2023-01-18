@@ -418,7 +418,7 @@ Using Euler, we solve for the position of the particle and the noise for the tim
    x_n&=x_{n-1}+u_{x_{n-1}}\dd t,\\
    y_n&=y_{n-1}+u_{y_{n-1}}\dd t,\\
    z_n&=z_{n-1}+(u_{z_{n-1}}-v_s)\dd t,\\
-   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}dt+\frac{1}{\tau}v\sqrt{2\Delta t}N^i_{n}
+   u^i_{n}&=u^i_{n-1}-\frac{1}{\tau}u^i_{n-1}dt+v\sqrt{\frac{2\Delta t}{\tau}}N^i_{n}
 \end{align}
 Where $N^{i}_n$ is a random number with zero mean and variance one.
 \subsection{One dimensional model}
