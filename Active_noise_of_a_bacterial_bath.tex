@@ -522,9 +522,80 @@ In Fig.~\ref{fig:confinement-effect}, we have shown $\tilde\tau$ as functions of
   \label{fig:sat-time}
 \end{figure}
 
-\textcolor{blue}{Discuss the value of prefactor.}
+The data suggests that the prefactor $\frac{9\eta}{2\Delta\rho g}\approx 8$ $\mu$m$\cdot$s.
+We can calculate the effective viscosity of bacterial suspensions $\eta\approx 0.004$ Pa$\cdot$s.
+This viscosity is slightly larger than water viscosity, suggesting that the presence of swimming bacteria results in more viscous drag on passive objects in the suspension, in intereting contrast with previous findings where pusher type swimmers reduce the viscosity of their suspending fluids \cite{Hatwalne2004, Gachelin2013, Giomi2010, Haines2008, Haines2009, Martinez2020, Slomka2017, Sokolov2009, Lopez2015, Guo2018, Liu2019}. 
+\textcolor{red}{Note that for the double emulsion experiments, the motility buffer (MB) is not supplemented with L-serine, so that the viscosity of MB can be well approximated by water viscosity.}
+In these works, swimmers need to be aligned by background flows, so that they can collectively generate significant effect on viscosity. 
+The absence of such strong alignment may lead to the enhancement of viscosity in our experiment.
+A more quantitative account is out of the scope of the present work, but is a worthy question for future investigations.
+
+\subsection{Concentration dependence}
+
+In most active matter experiments and models, the concentration of active particles plays a key role in the behavior of the systems. 
+For example, in bacterial suspensions, numerous works have shown that collective motions emerge only if the concentration of bacteria reaches a critical value \cite{Gachelin2014, Peng2021, Liu2021}.
+The ability to move passive objects also strongly depends concentration.  
+\citet{Mino2011} studied the diffusion of passive particles immersed in \ecoli suspensions near glass surface. 
+The results suggested that the enhancement of diffusivity is proportional to the ``active flux'', which is defined as the product of bacterial concentration $n$ and the average swimming speed $v$:
+%
+\begin{equation}
+	\label{eq:active-flux}
+	D_A = D_0 + \beta n v ,
+\end{equation}
+%
+where $D_0$ is the thermal diffusivity in the absence of bacteria.
+Figure~\ref{fig:collision-angle}(a) shows active diffusivity $D_A$ as a function of bacterial concentration in terms of optical density at 600 nm wavelength, OD.
+If we assume the bacterial samples are uniform in terms of activity, similar swimming speed $v$ should be expected, and therefore similar $D_A$ should be expected for same OD. 
+However, the data show obvious scattering at all OD's.
+For example, when OD$\approx 100$, $D_A$ data span almost 3 orders of magnitude. 
+In Fig.~\ref{fig:confinement-effect}(b), we showed that $D_A$ increases with outer droplet size, highlighting a key difference between the present work and \citet{Mino2011}: the outer droplet imposes a curved surface confining the inner droplet and bacteria, which modifies their interactions. 
+The most direct consequence is that certain collision angles, which are accessible near flat surface, are no longer accessible in the presence of curved surface.
+If a bacterium collides with an inner droplet at an angle $\theta$ with respect to the horizontal plane, as illustrated in Fig.~\ref{fig:collision-angle}(b), only the horizontal component of the swimming speed, $v\cos\theta$, can contribute to moving the droplet. 
+To adapt the ``active flux'' model (Eq.~\ref{eq:active-flux}) to our system with a curved surface, we assume that (i) all the bacteria interacting with the inner droplet swim in parallel with the outer droplet surface, and (ii) only the horizontal component of ``flux'' contributes to the inner droplet motion. As a result, Eq.~\ref{eq:active-flux} is modified to
+%
+\begin{equation}
+  \label{eq:active-flux-angle}
+  D_A = D_0 + \beta n v \cos\theta = D_0 + \beta n v \frac{\sqrt{(r_o-r_i)^2-r_i^2}}{r_o-r_i}.
+\end{equation}
+%
+Note that when $r>R/2$, the square root above goes imaginary. This corresponds to relatively large inner droplets in our data set. In those cases, the diffusivity $D_A$ is mostly very small (\textcolor{red}{need data support}). Therefore, we use a 2-step function $f(R, r)$ as the correction factor to the model:
+%
+\begin{equation}
+  D_A = D_0 + \beta n v f(R, r),
+\end{equation}
+%
+where
+$$
+  f(R, r) =
+  \begin{cases}
+  \frac{\sqrt{(R-r)^2-r^2}}{R-r}, & \text{if}\; r\le R/2 \\
+  0, & \text{if}\; r > R/2
+  \end{cases}
+$$
+%
+
+In Fig.~\ref{fig:collision-angle}(c), we plot $D_A$ as a function of OD$\cos\theta$. 
+Compared to Fig.~\ref{fig:collision-angle}(a), where collision angle is not considered, the data are brought closer, despite the still significant scattering. 
+
+Up to now, we have been assuming that the swimming speed $v$ is a constant. 
+However, our PIV-based bacterial activity measurement in the previous section suggests that swimming speed also depends on the size of out droplet, i.e. $v = v(r_o)$. 
+As shown in Fig.~\ref{fig:bacterial-activity}, if we look at a single concentration bracket, it is obvious that the average swimming speed $\overline V$ increases with outer droplet radius $r_o$.
+\textcolor{red}{Comparison across different concentration brackets is still problematic. That small OD samples have higher mean velocity compared to large OD samples is counterintuitive and requires reviewing of the data.}
+In an attempt to consider this factor, we plot $D_A$ as a function of $\text{OD}\cos\theta r_o^\alpha$ in Fig.~\ref{fig:collision-angle}, where $\alpha=0,1,2$.
+When $\alpha=1$, the $D_A$ data become less scattered, especially the high OD data, colored with green-yellow. 
+Low OD data remains relatively more scattered, probably because the inner droplet motion is weak compared to droplet detection error.
+
+\begin{figure*}
+  \centering
+  \includegraphics[width=\textwidth]{collision-angle-figure}
+  \caption{Saturation time $\tilde\tau$ as a function of geometrical factor $(r_o-r_i)/r_i^2$.}
+  \label{fig:collision-angle}
+\end{figure*}
+
+
+
 % Now we can study the limits cases as:
-% For short's times $t \to 0$:
+% For short's times $t \to 0$:s
 % \begin{equation}
 % 	\label{tcortos}
 % 	\left<\Delta x^2\right>\approx v_b^2 t^2.
